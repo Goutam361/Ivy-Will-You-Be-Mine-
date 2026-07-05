@@ -12,11 +12,13 @@
       font-family: 'Quicksand', sans-serif;
       background: #1a0a14;
       min-height: 100vh;
-      overflow: hidden;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow-y: auto;
+      padding: 30px 10px;
     }
 
     .hearts-bg {
@@ -295,7 +297,7 @@
       height: 28px;
       pointer-events: none;
       z-index: 999;
-      display: none;
+      display: block;
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
     }
 
@@ -308,7 +310,7 @@
       border: 3px solid #b0b0b0;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      display: none;
+      display: block;
       touch-action: none;
       user-select: none;
       margin: 30px auto 10px;
@@ -338,32 +340,7 @@
       to { transform: scale(2.5); opacity: 0; }
     }
 
-    .touch-device body {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow-y: auto;
-      padding: 30px 10px;
-      min-height: 100vh;
-    }
-    .touch-device .trackpad-container,
-    .touch-device .virtual-cursor {
-      display: block;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow-y: auto;
-        padding: 30px 10px;
-        min-height: 100vh;
-      }
-      .trackpad-container, .virtual-cursor {
-        display: block;
-      }
-    }
+    /* Clean layout is active everywhere by default */
   </style>
 </head>
 <body>
@@ -590,16 +567,52 @@
     document.body.classList.add('touch-device');
   }
 
-  if (isTouchDevice || window.innerWidth < 600) {
-    updateVCursor();
-  }
+  // Always enable virtual cursor on load
+  updateVCursor();
 
   let lastTouchX = 0, lastTouchY = 0;
   let isDragging = false;
+  let isMouseDragging = false;
   let touchStartTime = 0;
   let startTouchX = 0, startTouchY = 0;
 
   if (trackpad) {
+    // Mouse dragging on PC
+    trackpad.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      lastTouchX = e.clientX;
+      lastTouchY = e.clientY;
+      startTouchX = e.clientX;
+      startTouchY = e.clientY;
+      isMouseDragging = true;
+      touchStartTime = Date.now();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (isMouseDragging) {
+        const dx = e.clientX - lastTouchX;
+        const dy = e.clientY - lastTouchY;
+        const SENSITIVITY = 1.4;
+        curX += dx * SENSITIVITY;
+        curY += dy * SENSITIVITY;
+        curX = Math.max(0, Math.min(window.innerWidth, curX));
+        curY = Math.max(0, Math.min(window.innerHeight, curY));
+        lastTouchX = e.clientX;
+        lastTouchY = e.clientY;
+        updateVCursor();
+      }
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (isMouseDragging) {
+        isMouseDragging = false;
+        const duration = Date.now() - touchStartTime;
+        const dragDist = Math.hypot(lastTouchX - startTouchX, lastTouchY - startTouchY);
+        if (duration < 250 && dragDist < 8) {
+          clickAtCursor();
+        }
+      }
+    });
     trackpad.addEventListener('touchstart', function(e) {
       const touch = e.touches[0];
       lastTouchX = touch.clientX;
