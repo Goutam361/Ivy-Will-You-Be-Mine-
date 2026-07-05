@@ -359,6 +359,18 @@
       to { transform: scale(2.5); opacity: 0; }
     }
 
+    .touch-device body {
+      align-items: flex-start;
+      padding-top: 6vh;
+    }
+    .touch-device .card {
+      margin-bottom: 160px;
+    }
+    .touch-device .trackpad-container,
+    .touch-device .virtual-cursor {
+      display: block;
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -593,7 +605,12 @@
     }
   }
 
-  if (window.innerWidth < 600) {
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (isTouchDevice) {
+    document.body.classList.add('touch-device');
+  }
+
+  if (isTouchDevice || window.innerWidth < 600) {
     updateVCursor();
   }
 
