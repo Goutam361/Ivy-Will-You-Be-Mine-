@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ivy 💕 Will You Be Mine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #1a0a14;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .floating-heart {
+      position: absolute;
+      bottom: -60px;
+      font-size: 1.5rem;
+      animation: floatUp linear infinite;
+      opacity: 0;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.5; }
+      100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, #ff69b4, transparent);
+      animation: particleGlow 3s ease-in-out infinite;
+      opacity: 0.15;
+    }
+    @keyframes particleGlow {
+      0%, 100% { transform: scale(1); opacity: 0.1; }
+      50%       { transform: scale(1.6); opacity: 0.25; }
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,105,180,0.12) 100%);
+      border: 1px solid rgba(255,105,180,0.3);
+      border-radius: 32px;
+      padding: 56px 60px 48px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 60px rgba(255,20,147,0.25), 0 0 120px rgba(255,20,147,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+      max-width: 520px;
+      width: 92vw;
+      animation: cardPulse 4s ease-in-out infinite;
+    }
+    @keyframes cardPulse {
+      0%, 100% { box-shadow: 0 0 60px rgba(255,20,147,0.25), 0 0 120px rgba(255,20,147,0.1), inset 0 1px 0 rgba(255,255,255,0.15); }
+      50%       { box-shadow: 0 0 80px rgba(255,20,147,0.4),  0 0 160px rgba(255,20,147,0.2), inset 0 1px 0 rgba(255,255,255,0.15); }
+    }
+
+    .emoji-row {
+      font-size: 1.8rem;
+      margin-bottom: 18px;
+      animation: bounce 2s ease-in-out infinite;
+      display: block;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .question-text {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(255,105,180,0.7), 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .question-text span.name {
+      color: #ff85c1;
+      text-shadow: 0 0 30px #ff69b4, 0 0 60px #ff69b4;
+    }
+
+    .sub-text {
+      font-size: 0.95rem;
+      color: rgba(255,200,220,0.7);
+      margin-bottom: 40px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .btn-yes {
+      padding: 16px 48px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff4e8a, #ff1a6b);
+      color: #fff;
+      box-shadow: 0 6px 30px rgba(255,26,107,0.5), 0 2px 10px rgba(255,26,107,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 1px;
+    }
+    .btn-yes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      border-radius: 50px;
+    }
+    .btn-yes:hover {
+      transform: scale(1.08) translateY(-3px);
+      box-shadow: 0 12px 40px rgba(255,26,107,0.7), 0 4px 14px rgba(255,26,107,0.4);
+    }
+    .btn-yes:active { transform: scale(0.96); }
+
+    .btn-no {
+      padding: 18px 54px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      border: 2px solid rgba(255,105,180,0.4);
+      border-radius: 50px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,200,220,0.85);
+      letter-spacing: 0.5px;
+      position: fixed;
+      z-index: 100;
+      user-select: none;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-no:hover { background: rgba(255,255,255,0.1); }
+
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #1a0020 0%, #0d000a 100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+      padding: 20px;
+    }
+    .success-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .success-gif-wrapper {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(255,20,147,0.6), 0 0 160px rgba(255,20,147,0.3);
+      transform: scale(0.3) rotate(-10deg);
+      opacity: 0;
+      transition: transform 0.9s cubic-bezier(0.34,1.56,0.64,1), opacity 0.7s ease;
+      max-width: min(400px, 85vw);
+    }
+    .success-overlay.visible .success-gif-wrapper {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+    .success-gif-wrapper img {
+      width: 100%;
+      display: block;
+      border-radius: 24px;
+    }
+
+    .success-message {
+      margin-top: 28px;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+      color: #fff;
+      text-shadow: 0 0 30px #ff69b4, 0 0 60px #ff1493;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s;
+      text-align: center;
+    }
+    .success-overlay.visible .success-message {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .success-sub {
+      margin-top: 10px;
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      color: rgba(255,200,220,0.9);
+      opacity: 0;
+      transition: opacity 0.8s ease 0.8s;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .success-overlay.visible .success-sub {
+      opacity: 1;
+    }
+
+    .success-hearts {
+      margin-top: 14px;
+      font-size: 2.2rem;
+      opacity: 0;
+      transition: opacity 0.8s ease 1s;
+    }
+    .success-overlay.visible .success-hearts {
+      opacity: 1;
+      animation: heartbeat 1.2s ease-in-out infinite 1s;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25%       { transform: scale(1.25); }
+      50%       { transform: scale(1); }
+      75%       { transform: scale(1.15); }
+    }
+
+    .ripple-burst {
+      position: fixed;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,105,180,0.7), transparent);
+      pointer-events: none;
+      transform: scale(0);
+      animation: rippleBurst 0.8s ease-out forwards;
+      z-index: 150;
+    }
+    @keyframes rippleBurst {
+      to { transform: scale(20); opacity: 0; }
+    }
+
+    .confetti-heart {
+      position: fixed;
+      font-size: 1.4rem;
+      pointer-events: none;
+      z-index: 160;
+      animation: confettiFly 1.2s ease-out forwards;
+    }
+    @keyframes confettiFly {
+      0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hearts-bg" id="heartsBg"></div>
+  <div id="particleContainer"></div>
+
+  <div class="card" id="mainCard">
+    <span class="emoji-row">💌 🌹 💕</span>
+    <h1 class="question-text">
+      Ivy, will you be<br/>my girlfriend? 👉👈💕
+    </h1>
+    <p class="sub-text">~ tere bina sab adhura hai ~</p>
+
+    <div class="buttons" id="buttonsArea">
+      <button class="btn-yes" id="btnYes" onclick="onYesClick(event)">
+        💗 Yes!
+      </button>
+    </div>
+  </div>
+
+  <button class="btn-no" id="btnNo">No 🤨</button>
+
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-gif-wrapper" id="gifWrapper">
+      <img src="will-you-be-mine-will-you-be-my-girlfriend.gif" alt="Will you be mine?" />
+    </div>
+    <p class="success-message">Yay! You said YES! 💖</p>
+    <p class="success-sub">chalte phir road trip par Darjeeling ke pahadon par Maggi date par. but dhakaa mat mar dena 🤣</p>
+    <div class="success-hearts">💕 💗 💓 💞 💕</div>
+  </div>
+
+<script>
+  const heartEmojis = ['💕','💗','💓','💖','🌹','💝','💘','✨','🫶','💞'];
+  const bg = document.getElementById('heartsBg');
+  function spawnHeart() {
+    const el = document.createElement('div');
+    el.className = 'floating-heart';
+    el.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    const dur  = 6 + Math.random() * 8;
+    const size = 1 + Math.random() * 1.5;
+    el.style.fontSize = size + 'rem';
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay   = (Math.random() * 4) + 's';
+    bg.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 4) * 1000);
+  }
+  for (let i = 0; i < 18; i++) spawnHeart();
+  setInterval(spawnHeart, 800);
+
+  const pc = document.getElementById('particleContainer');
+  for (let i = 0; i < 6; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = 100 + Math.random() * 200;
+    p.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;top:' + (Math.random()*100) + 'vh;left:' + (Math.random()*100) + 'vw;animation-delay:' + (Math.random()*3) + 's;animation-duration:' + (3+Math.random()*4) + 's;position:fixed;z-index:1;';
+    pc.appendChild(p);
+  }
+
+  const btnNo = document.getElementById('btnNo');
+  const DODGE_DIST = 150;
+  const MARGIN = 20;
+  let noX, noY;
+
+  function placeInitial() {
+    noX = window.innerWidth  * 0.72 - (btnNo.offsetWidth  || 120) / 2;
+    noY = window.innerHeight * 0.55 - (btnNo.offsetHeight || 48)  / 2;
+    btnNo.style.left = noX + 'px';
+    btnNo.style.top  = noY + 'px';
+  }
+
+  function dodge() {
+    const w = btnNo.offsetWidth  || 120;
+    const h = btnNo.offsetHeight || 48;
+    let pos, attempts = 0;
+    do {
+      pos = {
+        x: MARGIN + Math.random() * (window.innerWidth  - w - MARGIN * 2),
+        y: MARGIN + Math.random() * (window.innerHeight - h - MARGIN * 2)
+      };
+      attempts++;
+    } while (attempts < 20 && Math.hypot(pos.x - noX, pos.y - noY) < 180);
+    noX = pos.x; noY = pos.y;
+    btnNo.style.transition = 'left 0.22s cubic-bezier(0.34,1.56,0.64,1), top 0.22s cubic-bezier(0.34,1.56,0.64,1)';
+    btnNo.style.left = noX + 'px';
+    btnNo.style.top  = noY + 'px';
+    setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s'; }, 300);
+  }
+
+  placeInitial();
+  window.addEventListener('resize', placeInitial);
+
+  document.addEventListener('mousemove', function(e) {
+    const rect = btnNo.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    if (Math.hypot(e.clientX - cx, e.clientY - cy) < DODGE_DIST) dodge();
+  });
+
+  document.addEventListener('touchmove', function(e) {
+    const t = e.touches[0];
+    const rect = btnNo.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    if (Math.hypot(t.clientX - cx, t.clientY - cy) < DODGE_DIST) dodge();
+  }, { passive: true });
+
+  btnNo.addEventListener('click', function(e) {
+    e.preventDefault();
+    dodge();
+  });
+
+  function onYesClick(e) {
+    const rip = document.createElement('div');
+    rip.className = 'ripple-burst';
+    rip.style.width = '60px'; rip.style.height = '60px';
+    rip.style.left = (e.clientX - 30) + 'px';
+    rip.style.top  = (e.clientY - 30) + 'px';
+    document.body.appendChild(rip);
+    setTimeout(() => rip.remove(), 900);
+
+    const HEARTS_BURST = ['💕','💗','💖','💝','🌹','✨','💞','💘'];
+    for (let i = 0; i < 22; i++) {
+      const h = document.createElement('div');
+      h.className = 'confetti-heart';
+      const angle = (i / 22) * 360;
+      const dist  = 120 + Math.random() * 200;
+      const tx = Math.cos(angle * Math.PI / 180) * dist;
+      const ty = Math.sin(angle * Math.PI / 180) * dist;
+      const rot = (Math.random() * 720 - 360);
+      h.style.left = e.clientX + 'px';
+      h.style.top  = e.clientY + 'px';
+      h.style.setProperty('--tx', tx + 'px');
+      h.style.setProperty('--ty', ty + 'px');
+      h.style.setProperty('--rot', rot + 'deg');
+      h.style.animationDelay    = (Math.random() * 0.15) + 's';
+      h.style.animationDuration = (0.9 + Math.random() * 0.5) + 's';
+      h.textContent = HEARTS_BURST[Math.floor(Math.random() * HEARTS_BURST.length)];
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1800);
+    }
+
+    setTimeout(function() {
+      document.getElementById('successOverlay').classList.add('visible');
+    }, 300);
+
+    btnNo.style.display = 'none';
+  }
+</script>
+</body>
+</html>
