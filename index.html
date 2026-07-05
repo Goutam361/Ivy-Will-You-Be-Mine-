@@ -142,6 +142,21 @@
     }
     .btn-yes:active { transform: scale(0.96); }
 
+    @media (max-width: 600px) {
+      .card {
+        padding: 40px 24px 32px;
+        border-radius: 28px;
+      }
+      .btn-yes {
+        padding: 14px 36px;
+        font-size: 1.15rem;
+      }
+      .btn-no {
+        padding: 14px 36px;
+        font-size: 1.15rem;
+      }
+    }
+
     .btn-no {
       padding: 18px 54px;
       font-family: 'Quicksand', sans-serif;
@@ -338,8 +353,15 @@
   let noX, noY;
 
   function placeInitial() {
-    noX = window.innerWidth  * 0.72 - (btnNo.offsetWidth  || 120) / 2;
-    noY = window.innerHeight * 0.55 - (btnNo.offsetHeight || 48)  / 2;
+    const w = btnNo.offsetWidth  || 120;
+    const h = btnNo.offsetHeight || 48;
+    if (window.innerWidth < 600) {
+      noX = window.innerWidth / 2 - w / 2;
+      noY = window.innerHeight * 0.78 - h / 2;
+    } else {
+      noX = window.innerWidth  * 0.72 - w / 2;
+      noY = window.innerHeight * 0.55 - h / 2;
+    }
     btnNo.style.left = noX + 'px';
     btnNo.style.top  = noY + 'px';
   }
@@ -348,13 +370,31 @@
     const w = btnNo.offsetWidth  || 120;
     const h = btnNo.offsetHeight || 48;
     let pos, attempts = 0;
+    const card = document.getElementById('mainCard');
+    const cardRect = card ? card.getBoundingClientRect() : null;
+    const minDodge = window.innerWidth < 600 ? 100 : 180;
+    
     do {
       pos = {
         x: MARGIN + Math.random() * (window.innerWidth  - w - MARGIN * 2),
         y: MARGIN + Math.random() * (window.innerHeight - h - MARGIN * 2)
       };
       attempts++;
-    } while (attempts < 20 && Math.hypot(pos.x - noX, pos.y - noY) < 180);
+      
+      const overlapsCard = cardRect && (
+        pos.x < cardRect.right + 10 &&
+        pos.x + w > cardRect.left - 10 &&
+        pos.y < cardRect.bottom + 10 &&
+        pos.y + h > cardRect.top - 10
+      );
+      
+      if (!overlapsCard || attempts > 20) {
+        if (Math.hypot(pos.x - noX, pos.y - noY) >= minDodge) {
+          break;
+        }
+      }
+    } while (attempts < 40);
+    
     noX = pos.x; noY = pos.y;
     btnNo.style.transition = 'left 0.22s cubic-bezier(0.34,1.56,0.64,1), top 0.22s cubic-bezier(0.34,1.56,0.64,1)';
     btnNo.style.left = noX + 'px';
@@ -379,6 +419,11 @@
     const cy = rect.top  + rect.height / 2;
     if (Math.hypot(t.clientX - cx, t.clientY - cy) < DODGE_DIST) dodge();
   }, { passive: true });
+
+  btnNo.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    dodge();
+  });
 
   btnNo.addEventListener('click', function(e) {
     e.preventDefault();
