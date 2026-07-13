@@ -331,9 +331,56 @@
         font-size: 0.95rem;
       }
     }
+
+    /* Floating Music Toggle */
+    .music-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 46px;
+      height: 46px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .music-toggle:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      transform: scale(1.08);
+      box-shadow: 0 12px 30px rgba(255, 20, 147, 0.2);
+    }
+    .music-toggle svg {
+      width: 22px;
+      height: 22px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Audio element for BGM -->
+  <audio id="bgm" src="music.mp3" loop></audio>
+
+  <!-- Floating Music Toggle Button -->
+  <button id="musicToggle" class="music-toggle" aria-label="Toggle Music">
+    <!-- Music On (Playing) Icon -->
+    <svg id="musicOnIcon" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+    <!-- Music Off (Muted) Icon -->
+    <svg id="musicOffIcon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+      <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.17l5.07 5.07 1.27-1.27L4.27 3zM14 7h4V3h-6v4.17l2 2V7z"/>
+    </svg>
+  </button>
 
   <div class="hearts-bg" id="heartsBg"></div>
   <div id="particleContainer"></div>
@@ -549,6 +596,56 @@
     }, 300);
 
     btnNo.style.display = 'none';
+  }
+
+  /* ─────────────────────────────────────────
+     BACKGROUND MUSIC PLAYBACK CONTROL
+  ──────────────────────────────────────── */
+  const bgm = document.getElementById('bgm');
+  const musicToggle = document.getElementById('musicToggle');
+  const musicOnIcon = document.getElementById('musicOnIcon');
+  const musicOffIcon = document.getElementById('musicOffIcon');
+  let isPlaying = false;
+
+  function playBgm() {
+    if (!isPlaying && bgm) {
+      bgm.play().then(() => {
+        isPlaying = true;
+        musicOnIcon.style.display = 'block';
+        musicOffIcon.style.display = 'none';
+      }).catch(err => {
+        console.log("Autoplay blocked by browser policy. Waiting for user interaction.");
+      });
+    }
+  }
+
+  // Attempt to play on first user touch/tap/click on screen
+  document.addEventListener('click', function startOnInteraction() {
+    playBgm();
+    document.removeEventListener('click', startOnInteraction);
+  }, { once: true });
+
+  document.addEventListener('touchstart', function startOnTouch() {
+    playBgm();
+    document.removeEventListener('touchstart', startOnTouch);
+  }, { once: true });
+
+  // Toggle button click listener
+  if (musicToggle && bgm) {
+    musicToggle.addEventListener('click', function(e) {
+      e.stopPropagation(); // Avoid triggering document-level listeners
+      if (bgm.paused) {
+        bgm.play();
+        isPlaying = true;
+        musicOnIcon.style.display = 'block';
+        musicOffIcon.style.display = 'none';
+      } else {
+        bgm.pause();
+        isPlaying = false;
+        musicOnIcon.style.display = 'none';
+        musicOffIcon.style.display = 'block';
+      }
+    });
   }
 </script>
 </body>
