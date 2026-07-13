@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Montserrat', sans-serif;
-      background: radial-gradient(circle at 50% 50%, #20081a 0%, #0d020a 100%);
+      background: radial-gradient(circle at 50% 50%, #0a0e1a 0%, #050508 100%);
       min-height: 100vh;
       overflow: hidden;
       display: flex;
@@ -159,29 +159,30 @@
     }
     .btn-yes:active { transform: scale(0.96); }
 
-    /* Minimalist luxury NO button */
+    /* Bold red NO button */
     .btn-no {
-      padding: 15px 44px;
+      padding: 18px 56px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 2px solid #e63946;
       border-radius: 50px;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.03);
-      color: rgba(255, 255, 255, 0.75);
+      background: #e63946;
+      color: #ffffff;
       position: fixed;
       z-index: 100;
       user-select: none;
       white-space: nowrap;
-      transition: background 0.3s, border-color 0.3s, color 0.3s;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 6px 25px rgba(230, 57, 70, 0.4);
     }
     .btn-no:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.35);
-      color: #ffffff;
+      background: #d62839;
+      border-color: #d62839;
+      box-shadow: 0 10px 35px rgba(230, 57, 70, 0.6);
     }
 
     /* Success overlay styling (gorgeous dark overlay) */
