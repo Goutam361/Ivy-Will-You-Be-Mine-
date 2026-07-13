@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,13 +7,13 @@
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
   <title>Ivy 💕 Will You Be Mine?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Quicksand', sans-serif;
-      background: #1a0a14;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at 50% 50%, #20081a 0%, #0d020a 100%);
       min-height: 100vh;
       overflow: hidden;
       display: flex;
@@ -22,6 +22,7 @@
       position: relative;
     }
 
+    /* Floating hearts background (glowing SVG vectors) */
     .hearts-bg {
       position: fixed;
       inset: 0;
@@ -32,79 +33,90 @@
     .floating-heart {
       position: absolute;
       bottom: -60px;
-      font-size: 1.5rem;
+      pointer-events: none;
       animation: floatUp linear infinite;
-      opacity: 0;
+      transform-origin: center;
     }
     @keyframes floatUp {
-      0%   { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
-      10%  { opacity: 0.8; }
-      90%  { opacity: 0.5; }
-      100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+      0%   { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 0; }
+      10%  { opacity: var(--op); }
+      90%  { opacity: var(--op); }
+      100% { transform: translateY(-115vh) rotate(360deg) scale(1.1); opacity: 0; }
     }
 
+    /* Aurora background particles */
     .particle {
       position: absolute;
       border-radius: 50%;
       pointer-events: none;
-      background: radial-gradient(circle, #ff69b4, transparent);
-      animation: particleGlow 3s ease-in-out infinite;
-      opacity: 0.15;
+      background: radial-gradient(circle, rgba(255, 105, 180, 0.15), transparent 70%);
+      animation: particleGlow 6s ease-in-out infinite;
     }
     @keyframes particleGlow {
-      0%, 100% { transform: scale(1); opacity: 0.1; }
-      50%       { transform: scale(1.6); opacity: 0.25; }
+      0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.1; }
+      50%       { transform: scale(1.4) translate(20px, -20px); opacity: 0.25; }
     }
 
+    /* Premium glassmorphism card */
     .card {
       position: relative;
       z-index: 10;
-      background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,105,180,0.12) 100%);
-      border: 1px solid rgba(255,105,180,0.3);
-      border-radius: 32px;
-      padding: 56px 60px 48px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 105, 180, 0.07) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 36px;
+      padding: 64px 60px 52px;
       text-align: center;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 0 60px rgba(255,20,147,0.25), 0 0 120px rgba(255,20,147,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
       max-width: 520px;
       width: 92vw;
-      animation: cardPulse 4s ease-in-out infinite;
+      animation: cardPulse 5s ease-in-out infinite;
     }
     @keyframes cardPulse {
-      0%, 100% { box-shadow: 0 0 60px rgba(255,20,147,0.25), 0 0 120px rgba(255,20,147,0.1), inset 0 1px 0 rgba(255,255,255,0.15); }
-      50%       { box-shadow: 0 0 80px rgba(255,20,147,0.4),  0 0 160px rgba(255,20,147,0.2), inset 0 1px 0 rgba(255,255,255,0.15); }
+      0%, 100% { box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12); }
+      50%       { box-shadow: 0 40px 120px rgba(255, 20, 147, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
     }
 
+    /* Luxury badge styled emoji row */
     .emoji-row {
-      font-size: 1.8rem;
-      margin-bottom: 18px;
-      animation: bounce 2s ease-in-out infinite;
-      display: block;
+      display: inline-block;
+      font-size: 1.25rem;
+      padding: 6px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 30px;
+      margin-bottom: 28px;
+      letter-spacing: 6px;
+      text-indent: 6px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      animation: floatBadge 3s ease-in-out infinite;
     }
-    @keyframes bounce {
+    @keyframes floatBadge {
       0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-8px); }
+      50%       { transform: translateY(-5px); }
     }
 
+    /* Serif playfair elegant typography */
     .question-text {
-      font-family: 'Pacifico', cursive;
-      font-size: clamp(1.5rem, 5vw, 2.2rem);
-      color: #fff;
-      line-height: 1.35;
-      margin-bottom: 10px;
-      text-shadow: 0 0 20px rgba(255,105,180,0.7), 0 2px 4px rgba(0,0,0,0.5);
-    }
-    .question-text span.name {
-      color: #ff85c1;
-      text-shadow: 0 0 30px #ff69b4, 0 0 60px #ff69b4;
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: clamp(1.6rem, 5vw, 2.5rem);
+      color: #ffffff;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
     .sub-text {
-      font-size: 0.95rem;
-      color: rgba(255,200,220,0.7);
-      margin-bottom: 40px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      font-size: 0.78rem;
+      color: rgba(255, 182, 193, 0.7);
+      margin-bottom: 44px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .buttons {
@@ -116,69 +128,63 @@
       position: relative;
     }
 
+    /* Premium YES button with floating pulse */
     .btn-yes {
       padding: 16px 48px;
-      font-family: 'Quicksand', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
       border: none;
       border-radius: 50px;
       cursor: pointer;
       background: linear-gradient(135deg, #ff4e8a, #ff1a6b);
       color: #fff;
-      box-shadow: 0 6px 30px rgba(255,26,107,0.5), 0 2px 10px rgba(255,26,107,0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 30px rgba(255, 26, 107, 0.4);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
       position: relative;
       overflow: hidden;
-      letter-spacing: 1px;
     }
     .btn-yes::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
       border-radius: 50px;
     }
     .btn-yes:hover {
-      transform: scale(1.08) translateY(-3px);
-      box-shadow: 0 12px 40px rgba(255,26,107,0.7), 0 4px 14px rgba(255,26,107,0.4);
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 16px 40px rgba(255, 26, 107, 0.6);
     }
     .btn-yes:active { transform: scale(0.96); }
 
-    @media (max-width: 600px) {
-      .card {
-        padding: 40px 24px 32px;
-        border-radius: 28px;
-      }
-      .btn-yes {
-        padding: 14px 36px;
-        font-size: 1.15rem;
-      }
-      .btn-no {
-        padding: 14px 36px;
-        font-size: 1.15rem;
-      }
-    }
-
+    /* Minimalist luxury NO button */
     .btn-no {
-      padding: 18px 54px;
-      font-family: 'Quicksand', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      border: 2px solid rgba(255,105,180,0.4);
+      padding: 15px 44px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 50px;
       cursor: pointer;
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,200,220,0.85);
-      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.75);
       position: fixed;
       z-index: 100;
       user-select: none;
       white-space: nowrap;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
     }
-    .btn-no:hover { background: rgba(255,255,255,0.1); }
+    .btn-no:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
 
+    /* Success overlay styling (gorgeous dark overlay) */
     .success-overlay {
       position: fixed;
       inset: 0;
@@ -187,10 +193,10 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(ellipse at center, #1a0020 0%, #0d000a 100%);
+      background: radial-gradient(circle at 50% 50%, #170213 0%, #050005 100%);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       padding: 20px;
     }
     .success-overlay.visible {
@@ -198,14 +204,16 @@
       pointer-events: all;
     }
 
+    /* Elegant framed wrapper for the GIF */
     .success-gif-wrapper {
       position: relative;
-      border-radius: 24px;
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 0 80px rgba(255,20,147,0.6), 0 0 160px rgba(255,20,147,0.3);
-      transform: scale(0.3) rotate(-10deg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 80px rgba(255, 20, 147, 0.4), 0 0 120px rgba(0, 0, 0, 0.8);
+      transform: scale(0.4) rotate(-6deg);
       opacity: 0;
-      transition: transform 0.9s cubic-bezier(0.34,1.56,0.64,1), opacity 0.7s ease;
+      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, opacity 0.8s ease 0.1s;
       max-width: min(400px, 85vw);
     }
     .success-overlay.visible .success-gif-wrapper {
@@ -215,18 +223,21 @@
     .success-gif-wrapper img {
       width: 100%;
       display: block;
-      border-radius: 24px;
+      border-radius: 28px;
     }
 
+    /* Elegant playfair italic success msg */
     .success-message {
-      margin-top: 28px;
-      font-family: 'Pacifico', cursive;
-      font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+      margin-top: 36px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
       color: #fff;
-      text-shadow: 0 0 30px #ff69b4, 0 0 60px #ff1493;
+      text-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s;
+      transform: translateY(20px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
       text-align: center;
     }
     .success-overlay.visible .success-message {
@@ -235,41 +246,56 @@
     }
 
     .success-sub {
-      margin-top: 10px;
-      font-size: clamp(0.85rem, 2.5vw, 1rem);
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 700;
-      color: rgba(255,200,220,0.9);
+      margin-top: 14px;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      color: rgba(255, 218, 224, 0.9);
       opacity: 0;
-      transition: opacity 0.8s ease 0.8s;
+      transform: translateY(15px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s;
       text-align: center;
-      letter-spacing: 0.5px;
+      max-width: 500px;
+      line-height: 1.5;
     }
     .success-overlay.visible .success-sub {
       opacity: 1;
+      transform: translateY(0);
     }
 
+    /* Row of pulsing custom SVG hearts */
     .success-hearts {
-      margin-top: 14px;
-      font-size: 2.2rem;
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
       opacity: 0;
-      transition: opacity 0.8s ease 1s;
+      transition: opacity 0.9s ease 0.9s;
     }
     .success-overlay.visible .success-hearts {
       opacity: 1;
-      animation: heartbeat 1.2s ease-in-out infinite 1s;
     }
-    @keyframes heartbeat {
+    .success-heart-icon {
+      width: 22px;
+      height: 22px;
+      color: #ff4e8a;
+      animation: successHeartBeat 1.4s ease-in-out infinite;
+    }
+    .success-heart-icon:nth-child(2) { animation-delay: 0.2s; }
+    .success-heart-icon:nth-child(3) { animation-delay: 0.4s; color: #ff1a6b; }
+    .success-heart-icon:nth-child(4) { animation-delay: 0.6s; }
+    .success-heart-icon:nth-child(5) { animation-delay: 0.8s; }
+
+    @keyframes successHeartBeat {
       0%, 100% { transform: scale(1); }
-      25%       { transform: scale(1.25); }
-      50%       { transform: scale(1); }
-      75%       { transform: scale(1.15); }
+      30%       { transform: scale(1.3); }
+      60%       { transform: scale(1); }
     }
 
     .ripple-burst {
       position: fixed;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,105,180,0.7), transparent);
+      background: radial-gradient(circle, rgba(255,105,180,0.6), transparent);
       pointer-events: none;
       transform: scale(0);
       animation: rippleBurst 0.8s ease-out forwards;
@@ -281,7 +307,6 @@
 
     .confetti-heart {
       position: fixed;
-      font-size: 1.4rem;
       pointer-events: none;
       z-index: 160;
       animation: confettiFly 1.2s ease-out forwards;
@@ -289,6 +314,21 @@
     @keyframes confettiFly {
       0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
       100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 48px 24px 40px;
+        border-radius: 28px;
+      }
+      .btn-yes {
+        padding: 14px 36px;
+        font-size: 0.95rem;
+      }
+      .btn-no {
+        padding: 14px 36px;
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
@@ -319,37 +359,64 @@
     </div>
     <p class="success-message">Yay! You said YES! 💖</p>
     <p class="success-sub">chalte phir road trip par Darjeeling ke pahadon par Maggi date par. but dhakaa mat mar dena 🤣</p>
-    <div class="success-hearts">💕 💗 💓 💞 💕</div>
+    <div class="success-hearts">
+      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
   </div>
 
 <script>
-  const heartEmojis = ['💕','💗','💓','💖','🌹','💝','💘','✨','🫶','💞'];
+  /* ─────────────────────────────────────────
+     FLOATING VECTOR HEARTS BACKGROUND
+  ──────────────────────────────────────── */
   const bg = document.getElementById('heartsBg');
   function spawnHeart() {
     const el = document.createElement('div');
     el.className = 'floating-heart';
-    el.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    el.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    `;
+    const size = 12 + Math.random() * 24;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
     el.style.left = Math.random() * 100 + 'vw';
+    
+    // Luxury shades of rose, crimson and gold-rose
+    const colors = ['#ff4e8a', '#ff1a6b', '#ff758c', '#ffa4b6', '#ff4757'];
+    el.style.color = colors[Math.floor(Math.random() * colors.length)];
+    
+    const op = 0.15 + Math.random() * 0.45;
+    el.style.setProperty('--op', op);
+    
     const dur  = 6 + Math.random() * 8;
-    const size = 1 + Math.random() * 1.5;
-    el.style.fontSize = size + 'rem';
     el.style.animationDuration = dur + 's';
     el.style.animationDelay   = (Math.random() * 4) + 's';
     bg.appendChild(el);
     setTimeout(() => el.remove(), (dur + 4) * 1000);
   }
-  for (let i = 0; i < 18; i++) spawnHeart();
-  setInterval(spawnHeart, 800);
+  for (let i = 0; i < 20; i++) spawnHeart();
+  setInterval(spawnHeart, 700);
 
+  /* ─────────────────────────────────────────
+     AMBIENT GLOW PARTICLES
+  ──────────────────────────────────────── */
   const pc = document.getElementById('particleContainer');
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 8; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    const sz = 100 + Math.random() * 200;
-    p.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;top:' + (Math.random()*100) + 'vh;left:' + (Math.random()*100) + 'vw;animation-delay:' + (Math.random()*3) + 's;animation-duration:' + (3+Math.random()*4) + 's;position:fixed;z-index:1;';
+    const sz = 150 + Math.random() * 250;
+    p.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;top:' + (Math.random()*100) + 'vh;left:' + (Math.random()*100) + 'vw;animation-delay:' + (Math.random()*4) + 's;animation-duration:' + (6+Math.random()*6) + 's;position:fixed;z-index:1;';
     pc.appendChild(p);
   }
 
+  /* ─────────────────────────────────────────
+     NO BUTTON – DODGE LOGIC
+  ──────────────────────────────────────── */
   const btnNo = document.getElementById('btnNo');
   const DODGE_DIST = 150;
   const MARGIN = 20;
@@ -385,10 +452,10 @@
       attempts++;
       
       const overlapsCard = cardRect && (
-        pos.x < cardRect.right + 10 &&
-        pos.x + w > cardRect.left - 10 &&
-        pos.y < cardRect.bottom + 10 &&
-        pos.y + h > cardRect.top - 10
+        pos.x < cardRect.right + 15 &&
+        pos.x + w > cardRect.left - 15 &&
+        pos.y < cardRect.bottom + 15 &&
+        pos.y + h > cardRect.top - 15
       );
       
       if (!overlapsCard || attempts > 20) {
@@ -402,7 +469,7 @@
     btnNo.style.transition = 'left 0.22s cubic-bezier(0.34,1.56,0.64,1), top 0.22s cubic-bezier(0.34,1.56,0.64,1)';
     btnNo.style.left = noX + 'px';
     btnNo.style.top  = noY + 'px';
-    setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s'; }, 300);
+    setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s, border-color 0.3s'; }, 300);
   }
 
   placeInitial();
@@ -433,7 +500,11 @@
     dodge();
   });
 
+  /* ─────────────────────────────────────────
+     YES BUTTON CLICK
+  ──────────────────────────────────────── */
   function onYesClick(e) {
+    // Ripple burst from click position
     const rip = document.createElement('div');
     rip.className = 'ripple-burst';
     rip.style.width = '60px'; rip.style.height = '60px';
@@ -442,11 +513,21 @@
     document.body.appendChild(rip);
     setTimeout(() => rip.remove(), 900);
 
-    const HEARTS_BURST = ['💕','💗','💖','💝','🌹','✨','💞','💘'];
-    for (let i = 0; i < 22; i++) {
+    // Vector confetti hearts burst
+    const colors = ['#ff4e8a', '#ff1a6b', '#ff758c', '#ffa4b6', '#ff4757'];
+    for (let i = 0; i < 28; i++) {
       const h = document.createElement('div');
       h.className = 'confetti-heart';
-      const angle = (i / 22) * 360;
+      const size = 12 + Math.random() * 12;
+      h.style.width = size + 'px';
+      h.style.height = size + 'px';
+      h.style.color = colors[Math.floor(Math.random() * colors.length)];
+      h.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      `;
+      const angle = (i / 28) * 360;
       const dist  = 120 + Math.random() * 200;
       const tx = Math.cos(angle * Math.PI / 180) * dist;
       const ty = Math.sin(angle * Math.PI / 180) * dist;
@@ -458,7 +539,6 @@
       h.style.setProperty('--rot', rot + 'deg');
       h.style.animationDelay    = (Math.random() * 0.15) + 's';
       h.style.animationDuration = (0.9 + Math.random() * 0.5) + 's';
-      h.textContent = HEARTS_BURST[Math.floor(Math.random() * HEARTS_BURST.length)];
       document.body.appendChild(h);
       setTimeout(() => h.remove(), 1800);
     }
