@@ -373,11 +373,11 @@
   <!-- Floating Music Toggle Button -->
   <button id="musicToggle" class="music-toggle" aria-label="Toggle Music">
     <!-- Music On (Playing) Icon -->
-    <svg id="musicOnIcon" viewBox="0 0 24 24" fill="currentColor">
+    <svg id="musicOnIcon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
       <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
     </svg>
     <!-- Music Off (Muted) Icon -->
-    <svg id="musicOffIcon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+    <svg id="musicOffIcon" viewBox="0 0 24 24" fill="currentColor">
       <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.17l5.07 5.07 1.27-1.27L4.27 3zM14 7h4V3h-6v4.17l2 2V7z"/>
     </svg>
   </button>
@@ -540,11 +540,13 @@
 
   btnNo.addEventListener('touchstart', function(e) {
     e.preventDefault();
+    playBgm();
     dodge();
   });
 
   btnNo.addEventListener('click', function(e) {
     e.preventDefault();
+    playBgm();
     dodge();
   });
 
@@ -552,6 +554,7 @@
      YES BUTTON CLICK
   ──────────────────────────────────────── */
   function onYesClick(e) {
+    playBgm();
     // Ripple burst from click position
     const rip = document.createElement('div');
     rip.className = 'ripple-burst';
