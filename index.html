@@ -617,151 +617,151 @@
       text-align: center;
     }
 
-    /* Calendar Popup Dropdown */
+    /* Chrome Native Datepicker Style matching User's Reference Image */
     .calendar-popup {
       position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      right: 0;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 292px;
       background: #ffffff;
-      border: 1.5px solid #ebdada;
-      border-radius: 18px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
-      padding: 14px 12px 10px;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+      padding: 14px 14px 10px;
       z-index: 120;
       display: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
     .calendar-popup.open {
       display: block;
-      animation: calFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: calFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes calFadeIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translate(-50%, -6px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
     }
-    .cal-nav-bar {
+    .cal-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       padding: 0 4px;
     }
-    .cal-arrow-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
+    .cal-month-title-wrap {
+      font-size: 15px;
+      font-weight: 700;
+      color: #202124;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+    }
+    .cal-month-caret {
+      font-size: 11px;
+      color: #3c4043;
+    }
+    .cal-arrows-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cal-nav-arrow {
+      background: transparent;
       border: none;
-      background: #f8eded;
-      color: #6e2437;
-      font-size: 1.2rem;
-      font-weight: bold;
+      color: #3c4043;
+      font-size: 19px;
+      font-weight: 700;
       cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s;
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
     }
-    .cal-arrow-btn:hover {
-      background: #ebd4d8;
+    .cal-nav-arrow:hover {
+      background: #e8eaed;
+      color: #202124;
     }
-    .cal-month-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #612232;
-    }
-    .cal-weekdays {
+    .cal-weekday-row {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       text-align: center;
-      font-size: 0.72rem;
+      font-size: 13px;
       font-weight: 700;
-      color: #8c7d81;
-      margin-bottom: 6px;
+      color: #202124;
+      margin-bottom: 8px;
+      user-select: none;
     }
-    .cal-sun-header {
-      color: #df538a;
-    }
-    .cal-days-grid {
+    .cal-grid-days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 3px;
+      row-gap: 4px;
+      column-gap: 2px;
     }
     .cal-day-cell {
-      height: 34px;
+      height: 32px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 50%;
-      font-size: 0.84rem;
-      font-weight: 600;
-      position: relative;
+      font-size: 14px;
+      font-weight: 500;
+      color: #202124;
+      border-radius: 4px;
       cursor: pointer;
       user-select: none;
-      transition: transform 0.15s, background 0.15s;
+      transition: background 0.12s, border-color 0.12s;
     }
-    .cal-day-cell.empty {
-      cursor: default;
-      pointer-events: none;
+    .cal-day-cell.outside-month {
+      color: #70757a;
     }
     .cal-day-cell.disabled {
-      color: #ccc;
-      opacity: 0.3;
+      color: #bdc1c6 !important;
       cursor: not-allowed;
-      background: transparent;
+      background: transparent !important;
+      border: none !important;
     }
-    .cal-day-cell.sunday-avail {
-      color: #df538a;
-      background: #fff0f5;
-      font-weight: 700;
-      border: 1px solid #fed8e4;
+    .cal-day-cell.available {
+      font-weight: 600;
+      color: #202124;
     }
-    .cal-day-cell.sunday-avail:hover {
-      background: #df538a;
-      color: #ffffff;
-      transform: scale(1.12);
-    }
-    .cal-day-cell.holiday-avail {
-      color: #2b7a4b;
-      background: #f0f9f3;
-      font-weight: 700;
-      border: 1px solid #c7e9d2;
-    }
-    .cal-day-cell.holiday-avail:hover {
-      background: #2b7a4b;
-      color: #ffffff;
-      transform: scale(1.12);
+    .cal-day-cell.available:hover {
+      background: #d2e3fc;
+      border: 1px solid #1a73e8;
+      color: #1a73e8;
     }
     .cal-day-cell.selected {
-      background: #df538a !important;
+      background: #1a73e8 !important;
       color: #ffffff !important;
-      transform: scale(1.08);
-      box-shadow: 0 4px 12px rgba(223, 83, 138, 0.45);
+      font-weight: 700 !important;
+      border-radius: 4px !important;
+      border: none !important;
     }
-    .cal-legend {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px dashed #e8dede;
-      font-size: 0.68rem;
-      color: #665257;
-    }
-    .legend-item {
+    .cal-footer-row {
       display: flex;
       align-items: center;
-      gap: 4px;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #dadce0;
     }
-    .legend-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
+    .cal-footer-btn {
+      background: transparent;
+      border: none;
+      color: #1a73e8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      transition: background 0.15s;
     }
-    .sun-dot { background: #df538a; }
-    .hol-dot { background: #2b7a4b; }
-    .lock-dot { background: #bbb; }
+    .cal-footer-btn:hover {
+      background: #e8f0fe;
+    }
 
     /* Stage 3 Confirmed Card */
     .confirmed-card {
@@ -949,27 +949,34 @@
             <span class="cal-toggle-icon">🗓️</span>
           </div>
 
-          <!-- Popup Calendar restricted to Sundays & Holidays -->
+          <!-- Popup Calendar (Chrome native style matching reference image) -->
           <div class="calendar-popup" id="calendarPopup" onclick="event.stopPropagation()">
-            <div class="cal-nav-bar">
-              <button type="button" class="cal-arrow-btn" onclick="navMonth(-1)">‹</button>
-              <span class="cal-month-title" id="calMonthTitle">September 2026</span>
-              <button type="button" class="cal-arrow-btn" onclick="navMonth(1)">›</button>
+            <div class="cal-header-row">
+              <div class="cal-month-title-wrap">
+                <span id="calMonthTitle">August 2026</span>
+                <span class="cal-month-caret">▾</span>
+              </div>
+              <div class="cal-arrows-group">
+                <button type="button" class="cal-nav-arrow" onclick="navMonth(-1)" title="Previous month">↑</button>
+                <button type="button" class="cal-nav-arrow" onclick="navMonth(1)" title="Next month">↓</button>
+              </div>
             </div>
-            <div class="cal-weekdays">
-              <span class="cal-sun-header">Su</span>
-              <span>Mo</span>
-              <span>Tu</span>
-              <span>We</span>
-              <span>Th</span>
-              <span>Fr</span>
-              <span>Sa</span>
+
+            <div class="cal-weekday-row">
+              <span>S</span>
+              <span>M</span>
+              <span>T</span>
+              <span>W</span>
+              <span>T</span>
+              <span>F</span>
+              <span>S</span>
             </div>
-            <div class="cal-days-grid" id="calDaysGrid"></div>
-            <div class="cal-legend">
-              <span class="legend-item"><span class="legend-dot sun-dot"></span> Sundays ☀️</span>
-              <span class="legend-item"><span class="legend-dot hol-dot"></span> Holidays 🌴</span>
-              <span class="legend-item"><span class="legend-dot lock-dot"></span> Others 🔒</span>
+
+            <div class="cal-grid-days" id="calDaysGrid"></div>
+
+            <div class="cal-footer-row">
+              <button type="button" class="cal-footer-btn" onclick="clearSelectedDate(event)">Clear</button>
+              <button type="button" class="cal-footer-btn" onclick="goToToday(event)">Today</button>
             </div>
           </div>
         </div>
@@ -1361,15 +1368,38 @@
 
     const firstDayIndex = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const prevDaysInMonth = new Date(year, month, 0).getDate();
 
-    // Empty padding cells before 1st of month
-    for (let i = 0; i < firstDayIndex; i++) {
+    // 1. Previous month trailing days
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      const d = prevDaysInMonth - i;
+      const prevDate = new Date(year, month - 1, d);
+      const dayOfWeek = prevDate.getDay();
+      const status = checkDayAvailability(prevDate.getFullYear(), prevDate.getMonth(), d, dayOfWeek);
+
       const cell = document.createElement('div');
-      cell.className = 'cal-day-cell empty';
+      cell.className = 'cal-day-cell outside-month';
+      cell.textContent = d;
+
+      if (!status.available) {
+        cell.classList.add('disabled');
+      } else {
+        cell.classList.add('available');
+        if (selectedDateObj &&
+            selectedDateObj.getFullYear() === prevDate.getFullYear() &&
+            selectedDateObj.getMonth() === prevDate.getMonth() &&
+            selectedDateObj.getDate() === d) {
+          cell.classList.add('selected');
+        }
+        cell.onclick = function(e) {
+          e.stopPropagation();
+          selectDate(prevDate.getFullYear(), prevDate.getMonth(), d, status);
+        };
+      }
       grid.appendChild(cell);
     }
 
-    // Actual days
+    // 2. Current month days
     for (let d = 1; d <= daysInMonth; d++) {
       const dayOfWeek = (firstDayIndex + d - 1) % 7;
       const status = checkDayAvailability(year, month, d, dayOfWeek);
@@ -1380,7 +1410,6 @@
 
       if (!status.available) {
         cell.classList.add('disabled');
-        cell.title = "Only Sundays and Holidays allowed 😉";
         cell.onclick = function(e) {
           e.stopPropagation();
           const alertEl = document.getElementById('dateAlertMsg');
@@ -1390,28 +1419,48 @@
           }
         };
       } else {
-        if (status.type === 'sunday') {
-          cell.classList.add('sunday-avail');
-          cell.title = "Sunday ☀️ Available!";
-        } else {
-          cell.classList.add('holiday-avail');
-          cell.title = `Holiday: ${status.name}`;
-        }
-
-        // Selected state
+        cell.classList.add('available');
         if (selectedDateObj &&
             selectedDateObj.getFullYear() === year &&
             selectedDateObj.getMonth() === month &&
             selectedDateObj.getDate() === d) {
           cell.classList.add('selected');
         }
-
         cell.onclick = function(e) {
           e.stopPropagation();
           selectDate(year, month, d, status);
         };
       }
+      grid.appendChild(cell);
+    }
 
+    // 3. Next month leading days (fill to 42 cells total)
+    const totalFilled = firstDayIndex + daysInMonth;
+    const remaining = totalFilled <= 35 ? (35 - totalFilled) : (42 - totalFilled);
+    for (let d = 1; d <= remaining; d++) {
+      const nextDate = new Date(year, month + 1, d);
+      const dayOfWeek = nextDate.getDay();
+      const status = checkDayAvailability(nextDate.getFullYear(), nextDate.getMonth(), d, dayOfWeek);
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-day-cell outside-month';
+      cell.textContent = d;
+
+      if (!status.available) {
+        cell.classList.add('disabled');
+      } else {
+        cell.classList.add('available');
+        if (selectedDateObj &&
+            selectedDateObj.getFullYear() === nextDate.getFullYear() &&
+            selectedDateObj.getMonth() === nextDate.getMonth() &&
+            selectedDateObj.getDate() === d) {
+          cell.classList.add('selected');
+        }
+        cell.onclick = function(e) {
+          e.stopPropagation();
+          selectDate(nextDate.getFullYear(), nextDate.getMonth(), d, status);
+        };
+      }
       grid.appendChild(cell);
     }
   }
@@ -1443,6 +1492,22 @@
     const alertEl = document.getElementById('dateAlertMsg');
     if (alertEl) alertEl.textContent = '';
 
+    renderCalendar();
+  }
+
+  function clearSelectedDate(e) {
+    if (e) e.stopPropagation();
+    selectedDateObj = null;
+    selectedDateStr = "";
+    selectedSpecialType = "";
+    const input = document.getElementById('selectedDateInput');
+    if (input) input.value = "";
+    renderCalendar();
+  }
+
+  function goToToday(e) {
+    if (e) e.stopPropagation();
+    calCurrentDate = new Date();
     renderCalendar();
   }
 
