@@ -1532,7 +1532,12 @@
   // Hide music toggle button on mobile
   if (isMobile && musicToggle) musicToggle.style.display = 'none';
 
-  // Attempt to play on first user touch/tap/click on screen
+  // Desktop: try to autoplay BGM immediately on page load
+  if (!isMobile) {
+    playBgm(); // attempt right away — works if browser allows autoplay
+  }
+
+  // Fallback: play on first click anywhere (if autoplay was blocked)
   document.addEventListener('click', function startOnInteraction() {
     playBgm();
     // Play gun SFX once at page start
