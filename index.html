@@ -1511,8 +1511,16 @@
   const musicOffIcon = document.getElementById('musicOffIcon');
   let isPlaying = false;
 
+  // Triple-layer mobile detection — userAgent + touch points + coarse pointer
   const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)
-                || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+                || navigator.maxTouchPoints > 0
+                || window.matchMedia('(pointer: coarse)').matches;
+
+  // Hard-block BGM on mobile: clear src so it CANNOT load or play
+  if (isMobile && bgm) {
+    bgm.src = '';
+    bgm.load();
+  }
 
   function playBgm() {
     if (isMobile) return; // Mobile: no BGM, gun SFX only
@@ -1527,9 +1535,8 @@
     }
   }
 
-  // Hide music toggle button on mobile (no BGM on mobile)
+  // Hide music toggle button on mobile
   if (isMobile && musicToggle) musicToggle.style.display = 'none';
-
 
   // Attempt to play on first user touch/tap/click on screen
   document.addEventListener('click', function startOnInteraction() {
@@ -1539,7 +1546,7 @@
 
   document.addEventListener('touchstart', function startOnTouch() {
     playBgm();
-    // Also unlock gun SFX on mobile by loading it
+    // Unlock gun SFX on mobile
     const gunSfx = document.getElementById('gunSfx');
     if (gunSfx) { gunSfx.load(); }
     document.removeEventListener('touchstart', startOnTouch);
