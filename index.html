@@ -1081,7 +1081,7 @@
   </div>
 
   <!-- Audio element for BGM -->
-  <audio id="bgm" src="1st-part.mp4" loop autoplay preload="auto"></audio>
+  <audio id="bgm" src="1st-part.mp4" loop preload="auto"></audio>
   <!-- Gun SFX for NO button dodge -->
   <audio id="gunSfx" src="gun sfx.mp4" preload="auto"></audio>
 
@@ -1491,11 +1491,19 @@
   const bgm = document.getElementById('bgm');
   let isPlaying = false;
 
-  // Real mobile phone detection (screens <= 820px on mobile user agents)
-  const isMobile = window.innerWidth <= 820 && /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+  // True mobile detection (screen width <= 820px OR mobile user agent)
+  const isMobile = window.innerWidth <= 820 || /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+
+  // If mobile, ensure BGM is completely disabled & unloaded (NO music on mobile)
+  if (isMobile && bgm) {
+    bgm.pause();
+    bgm.removeAttribute('src');
+    bgm.src = '';
+    bgm.load();
+  }
 
   function playBgm() {
-    if (isMobile) return; // Mobile phone shows cat blocker
+    if (isMobile) return; // Strict block: NO music on mobile
     if (bgm && !isPlaying) {
       bgm.muted = false;
       const p = bgm.play();
@@ -1509,20 +1517,22 @@
     }
   }
 
-  // Trigger play immediately as soon as the site opens
-  playBgm();
-  document.addEventListener('DOMContentLoaded', playBgm);
-  window.addEventListener('load', playBgm);
-
-  // Fallback unlock on any first user gesture (pointer, touch, key, click, scroll)
-  const gestureEvents = ['pointerdown', 'mousedown', 'mousemove', 'keydown', 'scroll', 'click', 'touchstart'];
-  function unlockAudioOnGesture() {
+  // Desktop only: trigger play immediately as soon as site opens
+  if (!isMobile) {
     playBgm();
-    gestureEvents.forEach(evt => document.removeEventListener(evt, unlockAudioOnGesture));
-  }
-  gestureEvents.forEach(evt => document.addEventListener(evt, unlockAudioOnGesture, { once: true, passive: true }));
+    document.addEventListener('DOMContentLoaded', playBgm);
+    window.addEventListener('load', playBgm);
 
-  // Gun SFX plays once on first click/tap (mobile)
+    // Fallback unlock on first user gesture for desktop
+    const gestureEvents = ['pointerdown', 'mousedown', 'mousemove', 'keydown', 'scroll', 'click'];
+    function unlockAudioOnGesture() {
+      playBgm();
+      gestureEvents.forEach(evt => document.removeEventListener(evt, unlockAudioOnGesture));
+    }
+    gestureEvents.forEach(evt => document.addEventListener(evt, unlockAudioOnGesture, { once: true, passive: true }));
+  }
+
+  // Gun SFX plays once on first touch/tap on mobile
   function triggerGunSfx() {
     if (isMobile) {
       const gunSfx = document.getElementById('gunSfx');
