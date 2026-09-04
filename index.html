@@ -1202,9 +1202,6 @@
 
         <p class="confirmed-fun-text">Can't wait to spend this special day with you! 💕✨</p>
 
-        <a id="whatsappShareBtn" class="btn-whatsapp-share" target="_blank">
-          Send to Me on WhatsApp 📲
-        </a>
         <button type="button" class="btn-change-choice" onclick="reopenDateChooser()">
           Change Date / Plan 🗓️
         </button>
@@ -1828,13 +1825,6 @@
     if (dayDisplay) dayDisplay.textContent = selectedDateStr;
     if (timeDisplay) timeDisplay.textContent = chosenTimeText;
     if (actDisplay) actDisplay.textContent = `${selectedActivity} ${activityIcon}`;
-
-    // Configure WhatsApp share button
-    const waBtn = document.getElementById('whatsappShareBtn');
-    if (waBtn) {
-      const msg = `Hey! ❤️ I locked our date plan: ${selectedActivity} on ${selectedDateStr} at ${chosenTime}! Can't wait! 💕✨`;
-      waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
-    }
 
     // Send instant email notification to your inbox
     sendDatePlanEmail(selectedDateStr, chosenTimeText, selectedActivity);
