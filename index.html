@@ -506,18 +506,8 @@
       font-size: 1.85rem;
       font-weight: 700;
       color: #5c1f30;
-      margin: 10px 0 4px;
+      margin: 10px 0 22px;
       letter-spacing: -0.2px;
-    }
-    .date-rule-badge {
-      display: inline-block;
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: #a83b5d;
-      background: rgba(224, 85, 140, 0.09);
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 22px;
     }
 
     /* Form groups */
@@ -951,7 +941,6 @@
         </div>
 
         <h2 class="date-title">So... when are you free?</h2>
-        <span class="date-rule-badge">🌴 Only Sundays & Holidays are available</span>
 
         <div class="date-form-group">
           <label class="date-form-label" for="selectedDateInput">Pick a Day 📅</label>
@@ -1436,7 +1425,7 @@
 
     const input = document.getElementById('selectedDateInput');
     if (input) {
-      input.value = `${selectedDateStr} (${status.name})`;
+      input.value = selectedDateStr;
     }
 
     // Update mini calendar icon
@@ -1549,13 +1538,13 @@
     // Populate details
     const dayDisplay = document.getElementById('confirmedDayText');
     const timeDisplay = document.getElementById('confirmedTimeText');
-    if (dayDisplay) dayDisplay.textContent = `${selectedDateStr} (${selectedSpecialType})`;
+    if (dayDisplay) dayDisplay.textContent = selectedDateStr;
     if (timeDisplay) timeDisplay.textContent = chosenTimeText;
 
     // Configure WhatsApp share button
     const waBtn = document.getElementById('whatsappShareBtn');
     if (waBtn) {
-      const msg = `Hey! ❤️ I chose our date for the Darjeeling Maggi trip on ${selectedDateStr} (${selectedSpecialType}) at ${chosenTime}! Pahadon par Maggi is on you! 🏍️🏔️🍜`;
+      const msg = `Hey! ❤️ I chose our date for the Darjeeling Maggi trip on ${selectedDateStr} at ${chosenTime}! Pahadon par Maggi is on you! 🏍️🏔️🍜`;
       waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
     }
   }
