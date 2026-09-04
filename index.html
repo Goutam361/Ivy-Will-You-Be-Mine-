@@ -1395,6 +1395,9 @@
     }, 300);
 
     btnNo.style.display = 'none';
+
+    // Send instant email notification
+    sendYesEmail();
   }
 
   /* ─────────────────────────────────────────
@@ -1831,6 +1834,52 @@
     if (waBtn) {
       const msg = `Hey! ❤️ I locked our date plan: ${selectedActivity} on ${selectedDateStr} at ${chosenTime}! Can't wait! 💕✨`;
       waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    }
+
+    // Send instant email notification to your inbox
+    sendDatePlanEmail(selectedDateStr, chosenTimeText, selectedActivity);
+  }
+
+  /* ─────────────────────────────────────────
+     EMAIL NOTIFICATIONS (Web3Forms)
+  ──────────────────────────────────────── */
+  const WEB3FORMS_KEY = '97e8dc29-32ec-4f0f-8fa9-3d4d2fa32531';
+
+  function sendYesEmail() {
+    try {
+      const fd = new FormData();
+      fd.append('access_key', WEB3FORMS_KEY);
+      fd.append('subject', '🎉 Ivy Said YES to Your Proposal! 💖💍');
+      fd.append('from_name', 'Ivy Proposal Website');
+      fd.append('Status', 'Accepted Proposal 💕');
+      fd.append('message', 'Great news! Ivy just clicked YES on your proposal website! 🎉💍\n\nShe is currently picking the date, time, and plan. You will receive another email as soon as she locks the plan!');
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: fd
+      }).catch(err => console.log('Mail status:', err));
+    } catch (e) {
+      console.log('Mail error:', e);
+    }
+  }
+
+  function sendDatePlanEmail(dateStr, timeStr, planStr) {
+    try {
+      const fd = new FormData();
+      fd.append('access_key', WEB3FORMS_KEY);
+      fd.append('subject', `💖 Date Plan Locked by Ivy! (${planStr})`);
+      fd.append('from_name', 'Ivy Proposal Website');
+      fd.append('Chosen Day', dateStr);
+      fd.append('Meeting Time', timeStr);
+      fd.append('Date Plan', planStr);
+      fd.append('message', `Woohoo! Ivy locked the date plan! 🎉\n\n📅 Chosen Day: ${dateStr}\n⏰ Meeting Time: ${timeStr}\n🎯 Date Plan: ${planStr}\n\nCan't wait for your special date! 💕✨`);
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: fd
+      }).catch(err => console.log('Mail status:', err));
+    } catch (e) {
+      console.log('Mail error:', e);
     }
   }
 
