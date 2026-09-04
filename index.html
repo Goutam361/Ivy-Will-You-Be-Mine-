@@ -196,49 +196,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 105, 180, 0.35);
     }
 
-    /* Action Buttons (OPEN / CLOSE) */
-    .envelope-actions {
-      display: flex;
-      gap: 18px;
-      margin-top: 36px;
-      z-index: 10;
-    }
 
-    .btn-action {
-      padding: 12px 36px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .btn-action.open-btn {
-      background: #ffffff;
-      color: #c9184a;
-      border: 2px solid #c9184a;
-      box-shadow: 0 6px 20px rgba(201, 24, 74, 0.25);
-    }
-    .btn-action.open-btn:hover {
-      background: #c9184a;
-      color: #ffffff;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(201, 24, 74, 0.45);
-    }
-
-    .btn-action.close-btn {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.8);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-    }
-    .btn-action.close-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      border-color: #ffffff;
-      transform: translateY(-2px);
-    }
 
     /* Inside-letter YES & NO buttons */
     .buttons {
@@ -1219,12 +1177,6 @@
           </button>
         </div>
       </div>
-    </div>
-
-    <!-- Action Buttons matching reference -->
-    <div class="envelope-actions">
-      <button type="button" class="btn-action open-btn" id="btnOpen" onclick="openEnvelope()">OPEN 💌</button>
-      <button type="button" class="btn-action close-btn" id="btnClose" onclick="closeEnvelope()">CLOSE ✉️</button>
     </div>
   </div>
 
