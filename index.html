@@ -161,9 +161,9 @@
 
     /* Bold red NO button */
     .btn-no {
-      padding: 18px 56px;
+      padding: 16px 48px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.3rem;
+      font-size: 1.05rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
@@ -172,17 +172,19 @@
       cursor: pointer;
       background: #e63946;
       color: #ffffff;
-      position: fixed;
       z-index: 100;
       user-select: none;
       white-space: nowrap;
       transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 6px 25px rgba(230, 57, 70, 0.4);
+      box-shadow: 0 8px 30px rgba(230, 57, 70, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     .btn-no:hover {
       background: #d62839;
       border-color: #d62839;
-      box-shadow: 0 10px 35px rgba(230, 57, 70, 0.6);
+      box-shadow: 0 12px 35px rgba(230, 57, 70, 0.6);
     }
 
     /* Success overlay styling (gorgeous dark overlay) */
@@ -1106,10 +1108,11 @@
       <button class="btn-yes" id="btnYes" onclick="onYesClick(event)">
         💗 Yes!
       </button>
+      <button class="btn-no" id="btnNo">
+        NO 🤨
+      </button>
     </div>
   </div>
-
-  <button class="btn-no" id="btnNo">No 🤨</button>
 
   <div class="success-overlay" id="successOverlay">
     <!-- Stage 1: Cat GIF + Yay Message -->
@@ -1339,22 +1342,24 @@
      NO BUTTON – DODGE LOGIC
   ──────────────────────────────────────── */
   const btnNo = document.getElementById('btnNo');
-  const DODGE_DIST = 150;
+  const DODGE_DIST = 95;
   const MARGIN = 20;
-  let noX, noY;
+  let hasDodged = false;
+  let noX = 0, noY = 0;
 
-  function placeInitial() {
-    const w = btnNo.offsetWidth  || 120;
-    const h = btnNo.offsetHeight || 48;
-    if (window.innerWidth < 600) {
-      noX = window.innerWidth / 2 - w / 2;
-      noY = window.innerHeight * 0.78 - h / 2;
-    } else {
-      noX = window.innerWidth  * 0.72 - w / 2;
-      noY = window.innerHeight * 0.55 - h / 2;
+  function activateAndDodge() {
+    if (!hasDodged) {
+      const rect = btnNo.getBoundingClientRect();
+      noX = rect.left;
+      noY = rect.top;
+      btnNo.style.position = 'fixed';
+      btnNo.style.left = noX + 'px';
+      btnNo.style.top  = noY + 'px';
+      btnNo.style.margin = '0';
+      document.body.appendChild(btnNo);
+      hasDodged = true;
     }
-    btnNo.style.left = noX + 'px';
-    btnNo.style.top  = noY + 'px';
+    dodge();
   }
 
   function dodge() {
@@ -1373,10 +1378,10 @@
       attempts++;
       
       const overlapsCard = cardRect && (
-        pos.x < cardRect.right + 15 &&
-        pos.x + w > cardRect.left - 15 &&
-        pos.y < cardRect.bottom + 15 &&
-        pos.y + h > cardRect.top - 15
+        pos.x < cardRect.right + 20 &&
+        pos.x + w > cardRect.left - 20 &&
+        pos.y < cardRect.bottom + 20 &&
+        pos.y + h > cardRect.top - 20
       );
       
       if (!overlapsCard || attempts > 20) {
@@ -1393,14 +1398,13 @@
     setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s, border-color 0.3s'; }, 300);
   }
 
-  placeInitial();
-  window.addEventListener('resize', placeInitial);
-
   document.addEventListener('mousemove', function(e) {
     const rect = btnNo.getBoundingClientRect();
     const cx = rect.left + rect.width  / 2;
     const cy = rect.top  + rect.height / 2;
-    if (Math.hypot(e.clientX - cx, e.clientY - cy) < DODGE_DIST) dodge();
+    if (Math.hypot(e.clientX - cx, e.clientY - cy) < DODGE_DIST) {
+      activateAndDodge();
+    }
   });
 
   document.addEventListener('touchmove', function(e) {
@@ -1408,19 +1412,23 @@
     const rect = btnNo.getBoundingClientRect();
     const cx = rect.left + rect.width  / 2;
     const cy = rect.top  + rect.height / 2;
-    if (Math.hypot(t.clientX - cx, t.clientY - cy) < DODGE_DIST) dodge();
+    if (Math.hypot(t.clientX - cx, t.clientY - cy) < DODGE_DIST) {
+      activateAndDodge();
+    }
   }, { passive: true });
+
+  btnNo.addEventListener('mouseenter', activateAndDodge);
 
   btnNo.addEventListener('touchstart', function(e) {
     e.preventDefault();
     playBgm();
-    dodge();
+    activateAndDodge();
   });
 
   btnNo.addEventListener('click', function(e) {
     e.preventDefault();
     playBgm();
-    dodge();
+    activateAndDodge();
   });
 
   /* ─────────────────────────────────────────
