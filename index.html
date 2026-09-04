@@ -381,6 +381,14 @@
       width: 100%;
       animation: fadeInStage 0.4s ease;
     }
+    #successStageActivity {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      animation: fadeInStage 0.4s ease;
+    }
     #successStage3 {
       display: none;
       flex-direction: column;
@@ -388,6 +396,102 @@
       justify-content: center;
       width: 100%;
       animation: fadeInStage 0.4s ease;
+    }
+    .activity-card {
+      position: relative;
+      background: #f7f9f6;
+      color: #382a2e;
+      border-radius: 32px;
+      padding: 38px 28px 32px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      width: 92vw;
+      max-width: 410px;
+      text-align: center;
+    }
+    .activity-badge-row {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+    }
+    .activity-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #5c1f30;
+      margin-bottom: 4px;
+    }
+    .activity-sub {
+      font-size: 0.85rem;
+      color: #8c4c5c;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+    .activity-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .activity-option-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 2px solid #e0d5d7;
+      border-radius: 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: left;
+    }
+    .activity-option-item:hover {
+      border-color: #df538a;
+      background: #fff8fa;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(223, 83, 138, 0.15);
+    }
+    .activity-option-item.selected {
+      border-color: #df538a;
+      background: #fff0f5;
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(223, 83, 138, 0.25);
+    }
+    .activity-opt-icon {
+      font-size: 2rem;
+      width: 38px;
+      text-align: center;
+    }
+    .activity-opt-info {
+      flex: 1;
+    }
+    .activity-opt-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #2b1f23;
+      display: block;
+    }
+    .activity-opt-sub {
+      font-size: 0.76rem;
+      color: #8c7b80;
+      display: block;
+      margin-top: 2px;
+    }
+    .activity-check-box {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #d4c4c7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: transparent;
+      transition: all 0.2s;
+    }
+    .activity-option-item.selected .activity-check-box {
+      background: #df538a;
+      border-color: #df538a;
+      color: #ffffff;
     }
     @keyframes fadeInStage {
       from { opacity: 0; transform: scale(0.96) translateY(12px); }
@@ -1016,7 +1120,52 @@
         <div id="dateAlertMsg" class="date-alert-msg"></div>
 
         <button type="button" class="btn-set-date" id="btnSetDate" onclick="submitDateChoice()">
-          set the date! ♥
+          next: choose plan! ♥
+        </button>
+      </div>
+    </div>
+
+    <!-- Stage Activity: Choose Date Type -->
+    <div id="successStageActivity">
+      <div class="activity-card">
+        <button type="button" class="date-back-btn" onclick="backToDateChooser()">← Back</button>
+        <div class="activity-badge-row">🎬 🚗 🍕</div>
+        <h2 class="activity-title">What are we doing?</h2>
+        <p class="activity-sub">Choose our date plan 💕</p>
+
+        <div class="activity-options-list">
+          <div class="activity-option-item" onclick="selectActivity('Movies', this)">
+            <span class="activity-opt-icon">🎬</span>
+            <div class="activity-opt-info">
+              <span class="activity-opt-title">Movies</span>
+              <span class="activity-opt-sub">Popcorn & romantic movie date</span>
+            </div>
+            <div class="activity-check-box">✓</div>
+          </div>
+
+          <div class="activity-option-item selected" onclick="selectActivity('Long drive', this)">
+            <span class="activity-opt-icon">🚗</span>
+            <div class="activity-opt-info">
+              <span class="activity-opt-title">Long drive</span>
+              <span class="activity-opt-sub">Music, breeze & long talks</span>
+            </div>
+            <div class="activity-check-box">✓</div>
+          </div>
+
+          <div class="activity-option-item" onclick="selectActivity('Dominos', this)">
+            <span class="activity-opt-icon">🍕</span>
+            <div class="activity-opt-info">
+              <span class="activity-opt-title">Dominos</span>
+              <span class="activity-opt-sub">Cheese burst pizza & fun</span>
+            </div>
+            <div class="activity-check-box">✓</div>
+          </div>
+        </div>
+
+        <div id="activityAlertMsg" class="date-alert-msg"></div>
+
+        <button type="button" class="btn-set-date" id="btnSetActivity" onclick="submitActivityChoice()">
+          set our plan! ♥
         </button>
       </div>
     </div>
@@ -1026,7 +1175,7 @@
       <div class="confirmed-card">
         <div class="confirmed-badge">💍💖🎉</div>
         <h2 class="confirmed-title">It's a Date!</h2>
-        <p class="confirmed-sub">Darjeeling Trip & Maggi Date is Locked!</p>
+        <p class="confirmed-sub">Our Date is Locked! 💕</p>
 
         <div class="confirmed-details-box">
           <div class="confirm-detail-item">
@@ -1044,10 +1193,10 @@
             </div>
           </div>
           <div class="confirm-detail-item">
-            <span class="confirm-item-icon">📍</span>
+            <span class="confirm-item-icon">✨</span>
             <div class="confirm-item-text">
-              <span class="confirm-item-label">Trip Plan</span>
-              <span class="confirm-item-val">Darjeeling ke Pahad (Maggi Date) 🏍️🏔️🍜</span>
+              <span class="confirm-item-label">Date Plan</span>
+              <span class="confirm-item-val" id="confirmedActivityText">Long drive 🚗</span>
             </div>
           </div>
         </div>
@@ -1058,7 +1207,7 @@
           Send to Me on WhatsApp 📲
         </a>
         <button type="button" class="btn-change-choice" onclick="reopenDateChooser()">
-          Change Date / Time 🗓️
+          Change Date / Plan 🗓️
         </button>
       </div>
     </div>
@@ -1557,12 +1706,28 @@
     }
   });
 
-  /* Stage navigation */
+  /* Stage navigation & Date Type selection */
+  let selectedActivity = "Long drive";
+
+  function selectActivity(activityName, el) {
+    selectedActivity = activityName;
+    document.querySelectorAll('.activity-option-item').forEach(item => {
+      item.classList.remove('selected');
+    });
+    if (el) {
+      el.classList.add('selected');
+    }
+    const alertEl = document.getElementById('activityAlertMsg');
+    if (alertEl) alertEl.textContent = '';
+  }
+
   function showDateChooser() {
     const s1 = document.getElementById('successStage1');
     const s2 = document.getElementById('successStage2');
+    const sAct = document.getElementById('successStageActivity');
     const s3 = document.getElementById('successStage3');
     if (s1) s1.style.display = 'none';
+    if (sAct) sAct.style.display = 'none';
     if (s3) s3.style.display = 'none';
     if (s2) {
       s2.style.display = 'flex';
@@ -1573,17 +1738,32 @@
   function backToSuccessStage1() {
     const s1 = document.getElementById('successStage1');
     const s2 = document.getElementById('successStage2');
+    const sAct = document.getElementById('successStageActivity');
     const s3 = document.getElementById('successStage3');
     if (s2) s2.style.display = 'none';
+    if (sAct) sAct.style.display = 'none';
     if (s3) s3.style.display = 'none';
     if (s1) s1.style.display = 'flex';
+  }
+
+  function backToDateChooser() {
+    const s1 = document.getElementById('successStage1');
+    const s2 = document.getElementById('successStage2');
+    const sAct = document.getElementById('successStageActivity');
+    const s3 = document.getElementById('successStage3');
+    if (s1) s1.style.display = 'none';
+    if (sAct) sAct.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (s2) s2.style.display = 'flex';
   }
 
   function reopenDateChooser() {
     const s1 = document.getElementById('successStage1');
     const s2 = document.getElementById('successStage2');
+    const sAct = document.getElementById('successStageActivity');
     const s3 = document.getElementById('successStage3');
     if (s1) s1.style.display = 'none';
+    if (sAct) sAct.style.display = 'none';
     if (s3) s3.style.display = 'none';
     if (s2) s2.style.display = 'flex';
   }
@@ -1604,8 +1784,27 @@
       return;
     }
 
-    const chosenTime = timeSelect.value;
-    const chosenTimeText = timeSelect.options[timeSelect.selectedIndex].text;
+    if (alertEl) alertEl.textContent = '';
+
+    // Next step: Choose Date Plan (Movies, Long drive, Dominos)
+    const s1 = document.getElementById('successStage1');
+    const s2 = document.getElementById('successStage2');
+    const sAct = document.getElementById('successStageActivity');
+    const s3 = document.getElementById('successStage3');
+    if (s1) s1.style.display = 'none';
+    if (s2) s2.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (sAct) sAct.style.display = 'flex';
+  }
+
+  function submitActivityChoice() {
+    const timeSelect = document.getElementById('timeSelect');
+    const chosenTime = timeSelect ? timeSelect.value : '';
+    const chosenTimeText = timeSelect && timeSelect.selectedIndex >= 0 ? timeSelect.options[timeSelect.selectedIndex].text : chosenTime;
+
+    let activityIcon = '🚗';
+    if (selectedActivity === 'Movies') activityIcon = '🎬';
+    else if (selectedActivity === 'Dominos') activityIcon = '🍕';
 
     // Burst confetti!
     burstCelebrationConfetti();
@@ -1613,21 +1812,25 @@
     // Show Stage 3
     const s1 = document.getElementById('successStage1');
     const s2 = document.getElementById('successStage2');
+    const sAct = document.getElementById('successStageActivity');
     const s3 = document.getElementById('successStage3');
     if (s1) s1.style.display = 'none';
     if (s2) s2.style.display = 'none';
+    if (sAct) sAct.style.display = 'none';
     if (s3) s3.style.display = 'flex';
 
     // Populate details
     const dayDisplay = document.getElementById('confirmedDayText');
     const timeDisplay = document.getElementById('confirmedTimeText');
+    const actDisplay = document.getElementById('confirmedActivityText');
     if (dayDisplay) dayDisplay.textContent = selectedDateStr;
     if (timeDisplay) timeDisplay.textContent = chosenTimeText;
+    if (actDisplay) actDisplay.textContent = `${selectedActivity} ${activityIcon}`;
 
     // Configure WhatsApp share button
     const waBtn = document.getElementById('whatsappShareBtn');
     if (waBtn) {
-      const msg = `Hey! ❤️ I chose our date for the Darjeeling Maggi trip on ${selectedDateStr} at ${chosenTime}! Pahadon par Maggi is on you! 🏍️🏔️🍜`;
+      const msg = `Hey! ❤️ I locked our date plan: ${selectedActivity} on ${selectedDateStr} at ${chosenTime}! Can't wait! 💕✨`;
       waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
     }
   }
