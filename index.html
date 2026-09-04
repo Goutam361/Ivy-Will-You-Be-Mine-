@@ -1172,7 +1172,7 @@
       <div class="envelope-icon">💌</div>
       <h1 class="intro-title">A Special Letter For You</h1>
       <p class="intro-sub">From someone who truly cares ✨</p>
-      <button type="button" class="btn-open-letter" id="btnOpenLetter">
+      <button type="button" class="btn-open-letter" id="btnOpenLetter" onclick="openIntroLetter(event)">
         Tap to Open 💖
       </button>
     </div>
@@ -1574,55 +1574,6 @@
   }
 
   /* ─────────────────────────────────────────
-     OPEN INTRO LETTER (Unlocks audio 100% reliably)
-  ──────────────────────────────────────── */
-  function openIntroLetter(e) {
-    // 1. Play 1st-part.mp4 immediately upon this direct click
-    playBgm();
-
-    // 2. Hide intro overlay with smooth animation
-    const intro = document.getElementById('introOverlay');
-    if (intro) {
-      intro.classList.add('hidden');
-      setTimeout(() => {
-        if (intro.parentNode) intro.parentNode.removeChild(intro);
-      }, 850);
-    }
-
-    // 3. Heart confetti explosion from envelope position
-    const clientX = (e && e.clientX) ? e.clientX : (window.innerWidth / 2);
-    const clientY = (e && e.clientY) ? e.clientY : (window.innerHeight / 2);
-    const colors = ['#ff4e8a', '#ff1a6b', '#ff758c', '#ffa4b6', '#ff4757'];
-    for (let i = 0; i < 22; i++) {
-      const h = document.createElement('div');
-      h.className = 'confetti-heart';
-      const size = 14 + Math.random() * 12;
-      h.style.width = size + 'px';
-      h.style.height = size + 'px';
-      h.style.color = colors[Math.floor(Math.random() * colors.length)];
-      h.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-      `;
-      const angle = (i / 22) * 360;
-      const dist = 90 + Math.random() * 150;
-      const tx = Math.cos(angle * Math.PI / 180) * dist;
-      const ty = Math.sin(angle * Math.PI / 180) * dist;
-      const rot = (Math.random() * 720 - 360);
-      h.style.left = clientX + 'px';
-      h.style.top = clientY + 'px';
-      h.style.setProperty('--tx', tx + 'px');
-      h.style.setProperty('--ty', ty + 'px');
-      h.style.setProperty('--rot', rot + 'deg');
-      h.style.animationDelay = (Math.random() * 0.1) + 's';
-      h.style.animationDuration = (0.8 + Math.random() * 0.5) + 's';
-      document.body.appendChild(h);
-      setTimeout(() => h.remove(), 1600);
-    }
-  }
-
-  /* ─────────────────────────────────────────
      BACKGROUND MUSIC PLAYBACK CONTROL
   ──────────────────────────────────────── */
   const bgm = document.getElementById('bgm');
@@ -1660,19 +1611,72 @@
           isPlaying = true;
           cleanupUnlockListeners();
         }).catch(err => {
-          console.log("Waiting for user click to start audio:", err);
+          console.log("Audio waiting for click gesture:", err);
         });
       }
     }
   }
 
-  // Desktop only: trigger play immediately as soon as site opens
-  if (!isMobile) {
-    playBgm();
-    document.addEventListener('DOMContentLoaded', playBgm);
-    window.addEventListener('load', playBgm);
+  /* ─────────────────────────────────────────
+     OPEN INTRO LETTER (Unlocks audio 100% reliably)
+  ──────────────────────────────────────── */
+  function openIntroLetter(e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
 
-    // Keep listeners in capture mode until audio successfully begins playing
+    // 1. Play 1st-part.mp4 immediately
+    playBgm();
+
+    // 2. Hide intro overlay with smooth animation
+    const intro = document.getElementById('introOverlay');
+    if (intro) {
+      intro.classList.add('hidden');
+      setTimeout(() => {
+        try {
+          if (intro.parentNode) intro.parentNode.removeChild(intro);
+        } catch (err) {}
+      }, 800);
+    }
+
+    // 3. Heart confetti explosion from envelope position
+    try {
+      const clientX = (e && e.clientX) ? e.clientX : (window.innerWidth / 2);
+      const clientY = (e && e.clientY) ? e.clientY : (window.innerHeight / 2);
+      const colors = ['#ff4e8a', '#ff1a6b', '#ff758c', '#ffa4b6', '#ff4757'];
+      for (let i = 0; i < 22; i++) {
+        const h = document.createElement('div');
+        h.className = 'confetti-heart';
+        const size = 14 + Math.random() * 12;
+        h.style.width = size + 'px';
+        h.style.height = size + 'px';
+        h.style.color = colors[Math.floor(Math.random() * colors.length)];
+        h.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        `;
+        const angle = (i / 22) * 360;
+        const dist = 90 + Math.random() * 150;
+        const tx = Math.cos(angle * Math.PI / 180) * dist;
+        const ty = Math.sin(angle * Math.PI / 180) * dist;
+        const rot = (Math.random() * 720 - 360);
+        h.style.left = clientX + 'px';
+        h.style.top = clientY + 'px';
+        h.style.setProperty('--tx', tx + 'px');
+        h.style.setProperty('--ty', ty + 'px');
+        h.style.setProperty('--rot', rot + 'deg');
+        h.style.animationDelay = (Math.random() * 0.1) + 's';
+        h.style.animationDuration = (0.8 + Math.random() * 0.5) + 's';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 1600);
+      }
+    } catch (err) {}
+  }
+
+  // Desktop only: fallback listeners
+  if (!isMobile) {
     unlockEvents.forEach(evt => document.addEventListener(evt, onUserGesture, { capture: true, passive: true }));
   }
 
