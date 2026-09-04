@@ -58,31 +58,32 @@
     }
 
     /* ─────────────────────────────────────────
-       3D REALISTIC LOVE LETTER ENVELOPE (Matching Reference)
+       3D REALISTIC LOVE LETTER ENVELOPE (Polished)
     ──────────────────────────────────────── */
     .envelope-wrapper {
       position: relative;
       z-index: 10;
-      margin: 40px auto 20px;
+      margin: 80px auto 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      perspective: 1000px;
+      perspective: 1200px;
     }
 
     #envelope {
       position: relative;
-      width: 360px;
-      height: 230px;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
+      width: 340px;
+      height: 220px;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
       background-color: #d83a56;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 20, 147, 0.3);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), 0 0 45px rgba(255, 20, 147, 0.3);
       cursor: pointer;
-      transition: transform 0.4s ease;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     #envelope:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px);
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 20, 147, 0.45);
     }
 
     .front {
@@ -92,13 +93,13 @@
       z-index: 3;
     }
 
-    /* Top triangular flap that folds open */
+    /* Top triangular flap that folds DOWN when closed, UP when open */
     .flap {
-      border-left: 180px solid transparent;
-      border-right: 180px solid transparent;
-      border-top: 130px solid #f25c7e;
+      border-left: 170px solid transparent;
+      border-right: 170px solid transparent;
+      border-top: 125px solid #f25c7e;
       transform-origin: top;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.3s;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.3s;
       z-index: 5;
       top: 0;
       left: 0;
@@ -107,29 +108,31 @@
 
     /* Bottom pocket containing the letter */
     .pocket {
-      border-left: 180px solid #ff758f;
-      border-right: 180px solid #ff758f;
-      border-bottom: 140px solid #ff597b;
-      border-top: 100px solid transparent;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
+      border-left: 170px solid #ff758f;
+      border-right: 170px solid #ff758f;
+      border-bottom: 125px solid #ff597b;
+      border-top: 95px solid transparent;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
       z-index: 4;
       bottom: 0;
       left: 0;
       position: absolute;
+      pointer-events: none;
     }
 
-    /* The letter card sliding out */
+    /* The letter card tucked inside when closed, sliding out when open */
     .letter {
       position: absolute;
-      left: 15px;
-      right: 15px;
-      bottom: 0;
-      height: 260px;
+      left: 16px;
+      right: 16px;
+      bottom: 8px;
+      height: 200px;
       background: #ffffff;
       border-radius: 14px;
       z-index: 2;
-      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, z-index 0.1s ease 0.35s, box-shadow 0.4s ease;
+      opacity: 0;
+      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, opacity 0.4s ease 0.25s, height 0.7s ease, z-index 0.1s ease 0.35s, box-shadow 0.4s ease;
       padding: 24px 20px 20px;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
@@ -138,50 +141,53 @@
       align-items: center;
       justify-content: space-between;
       color: #333;
+      pointer-events: none;
     }
 
-    /* Top heart wax seal */
+    /* Heart wax seal on the tip of the flap */
     .heart-seal {
       position: absolute;
-      top: -24px;
+      top: 80px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 2.8rem;
-      filter: drop-shadow(0 4px 10px rgba(255, 20, 147, 0.5));
+      font-size: 2.6rem;
+      filter: drop-shadow(0 6px 16px rgba(255, 20, 147, 0.7));
       animation: sealPulse 2s ease-in-out infinite;
-      z-index: 10;
+      z-index: 6;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
       user-select: none;
     }
     @keyframes sealPulse {
       0%, 100% { transform: translateX(-50%) scale(1); }
-      50%       { transform: translateX(-50%) scale(1.12); }
+      50%       { transform: translateX(-50%) scale(1.15); }
     }
 
     /* Letter interior typography */
     .letter-header {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       color: #c9184a;
-      font-weight: 600;
-      margin-top: 4px;
+      font-weight: 700;
+      margin-top: 2px;
     }
 
     .letter-message {
       font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-style: italic;
       font-weight: 700;
       color: #1a1a1a;
       line-height: 1.35;
-      margin: 6px 0;
+      margin: 8px 0;
     }
 
     .letter-sub {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #888;
       font-family: 'Montserrat', sans-serif;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     /* Envelope Open State */
@@ -190,10 +196,39 @@
       z-index: 1;
     }
 
+    #envelope.open .heart-seal {
+      opacity: 0;
+      transform: translateX(-50%) scale(0);
+    }
+
     #envelope.open .letter {
       transform: translateY(-200px);
+      height: 270px;
+      opacity: 1;
       z-index: 6;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 105, 180, 0.35);
+      pointer-events: all;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 0 45px rgba(255, 105, 180, 0.4);
+    }
+
+    /* Tap Hint Badge */
+    .tap-hint {
+      margin-top: 28px;
+      color: rgba(255, 182, 193, 0.85);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      animation: hintFloat 2s ease-in-out infinite;
+      transition: opacity 0.4s ease;
+      user-select: none;
+      pointer-events: none;
+    }
+    @keyframes hintFloat {
+      0%, 100% { transform: translateY(0); opacity: 0.85; }
+      50%       { transform: translateY(-4px); opacity: 1; }
+    }
+    #envelope.open + .tap-hint {
+      opacity: 0;
     }
 
 
@@ -1156,13 +1191,13 @@
   <div class="hearts-bg" id="heartsBg"></div>
   <div id="particleContainer"></div>
 
-  <!-- 3D Realistic Animated Envelope Proposal (Matching Reference) -->
+  <!-- 3D Realistic Animated Envelope Proposal (Polished) -->
   <div class="envelope-wrapper" id="envelopeWrapper">
     <div id="envelope" class="close" onclick="toggleEnvelope()">
       <div class="front flap"></div>
+      <div class="heart-seal">💖</div>
       <div class="front pocket"></div>
       <div class="letter" id="letterCard">
-        <div class="heart-seal">💖</div>
         <div class="letter-header">To: Ivy 💕</div>
         <div class="letter-message">
           Can I ask you for a date? 🌹
@@ -1178,6 +1213,7 @@
         </div>
       </div>
     </div>
+    <p class="tap-hint">✨ Tap the envelope to open ✨</p>
   </div>
 
   <div class="success-overlay" id="successOverlay">
