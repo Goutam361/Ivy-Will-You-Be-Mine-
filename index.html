@@ -1518,26 +1518,16 @@
     }
   }
 
-  // Hide music toggle button on mobile
-  if (isMobile && musicToggle) musicToggle.style.display = 'none';
+  // No BGM on page open — music only starts when YES is clicked (2nd-part.mp4)
 
-  // Desktop: try to autoplay BGM immediately on page load
-  if (!isMobile) {
-    playBgm(); // attempt right away — works if browser allows autoplay
-  }
-
-  // Fallback: play on first click anywhere (if autoplay was blocked)
+  // Gun SFX plays once on first click/tap
   document.addEventListener('click', function startOnInteraction() {
-    playBgm();
-    // Play gun SFX once at page start
     const gunSfx = document.getElementById('gunSfx');
     if (gunSfx) { gunSfx.currentTime = 0; gunSfx.play().catch(() => {}); }
     document.removeEventListener('click', startOnInteraction);
   }, { once: true });
 
   document.addEventListener('touchstart', function startOnTouch() {
-    playBgm();
-    // Play gun SFX once at page start (mobile)
     const gunSfx = document.getElementById('gunSfx');
     if (gunSfx) { gunSfx.currentTime = 0; gunSfx.play().catch(() => {}); }
     document.removeEventListener('touchstart', startOnTouch);
