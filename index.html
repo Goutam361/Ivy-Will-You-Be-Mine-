@@ -1081,7 +1081,7 @@
   </div>
 
   <!-- Audio element for BGM -->
-  <audio id="bgm" src="music.mp3" loop></audio>
+  <audio id="bgm" src="1st-part.mp4" loop></audio>
 
   <!-- Floating Music Toggle Button -->
   <button id="musicToggle" class="music-toggle" aria-label="Toggle Music">
@@ -1435,7 +1435,19 @@
      YES BUTTON CLICK
   ──────────────────────────────────────── */
   function onYesClick(e) {
-    playBgm();
+    if (bgm) {
+      bgm.src = '2nd-part.mp4';
+      bgm.currentTime = 0;
+      bgm.play().then(() => {
+        isPlaying = true;
+        if (musicOnIcon && musicOffIcon) {
+          musicOnIcon.style.display = 'block';
+          musicOffIcon.style.display = 'none';
+        }
+      }).catch(err => {
+        console.log("Could not play 2nd part audio:", err);
+      });
+    }
     // Ripple burst from click position
     const rip = document.createElement('div');
     rip.className = 'ripple-burst';
