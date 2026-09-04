@@ -363,6 +363,522 @@
       width: 22px;
       height: 22px;
     }
+
+    /* Stage containers inside success overlay */
+    #successStage1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      animation: fadeInStage 0.5s ease;
+    }
+    #successStage2 {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      animation: fadeInStage 0.4s ease;
+    }
+    #successStage3 {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      animation: fadeInStage 0.4s ease;
+    }
+    @keyframes fadeInStage {
+      from { opacity: 0; transform: scale(0.96) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Button on stage 1 to proceed to date chooser */
+    .btn-next-step {
+      margin-top: 26px;
+      padding: 15px 38px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff4e8a, #ff1a6b);
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(255, 26, 107, 0.45);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+      animation: pulseNext 2s infinite ease-in-out;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-next-step:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 14px 40px rgba(255, 26, 107, 0.65);
+    }
+    @keyframes pulseNext {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(255, 26, 107, 0.4); }
+      50% { transform: scale(1.04); box-shadow: 0 12px 35px rgba(255, 26, 107, 0.65); }
+    }
+
+    /* Date Chooser Card (Matching User's Reference Image) */
+    .date-card {
+      position: relative;
+      background: #f7f9f6;
+      color: #382a2e;
+      border-radius: 32px;
+      padding: 38px 32px 32px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      width: 92vw;
+      max-width: 410px;
+      text-align: center;
+    }
+
+    .date-back-btn {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      border: none;
+      background: transparent;
+      color: #8c364d;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .date-back-btn:hover {
+      background: rgba(140, 54, 77, 0.08);
+    }
+
+    /* Top icon: mini calendar + paws */
+    .date-header-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .mini-calendar-icon {
+      width: 44px;
+      height: 48px;
+      background: #ffffff;
+      border: 1.5px solid #d4c8c8;
+      border-radius: 9px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .mini-cal-month {
+      background: #c53838;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 0;
+      text-align: center;
+    }
+    .mini-cal-day {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #2b2225;
+      font-family: 'Playfair Display', serif;
+    }
+    .paw-prints {
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      opacity: 0.85;
+      transform: rotate(-10deg);
+    }
+
+    /* Card title */
+    .date-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #5c1f30;
+      margin: 10px 0 4px;
+      letter-spacing: -0.2px;
+    }
+    .date-rule-badge {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #a83b5d;
+      background: rgba(224, 85, 140, 0.09);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 22px;
+    }
+
+    /* Form groups */
+    .date-form-group {
+      text-align: left;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .date-form-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #453439;
+      margin-bottom: 7px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .date-input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border: 1.5px solid #dcd3d3;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .date-input-wrapper:hover, .date-input-wrapper.active {
+      border-color: #df538a;
+      box-shadow: 0 0 0 3px rgba(223, 83, 138, 0.12);
+    }
+    .date-input-wrapper input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #332327;
+      width: 100%;
+      cursor: pointer;
+    }
+    .cal-toggle-icon {
+      font-size: 1.2rem;
+      margin-left: 8px;
+      opacity: 0.75;
+      user-select: none;
+    }
+
+    .time-select-wrapper {
+      background: #ffffff;
+      border: 1.5px solid #dcd3d3;
+      border-radius: 12px;
+      padding: 2px 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .time-select-wrapper:focus-within {
+      border-color: #df538a;
+      box-shadow: 0 0 0 3px rgba(223, 83, 138, 0.12);
+    }
+    .time-select-wrapper select {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #332327;
+      width: 100%;
+      padding: 12px 2px;
+      cursor: pointer;
+    }
+
+    /* Pink button: set the date! ♥ */
+    .btn-set-date {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      background: #df538a;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 8px 25px rgba(223, 83, 138, 0.38);
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .btn-set-date:hover {
+      background: #ce4077;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(223, 83, 138, 0.55);
+    }
+    .btn-set-date:active {
+      transform: scale(0.98);
+    }
+
+    /* Error / alert toast */
+    .date-alert-msg {
+      font-size: 0.8rem;
+      color: #c5294e;
+      font-weight: 600;
+      min-height: 18px;
+      margin-top: 4px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    /* Calendar Popup Dropdown */
+    .calendar-popup {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1.5px solid #ebdada;
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+      padding: 14px 12px 10px;
+      z-index: 120;
+      display: none;
+    }
+    .calendar-popup.open {
+      display: block;
+      animation: calFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes calFadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cal-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding: 0 4px;
+    }
+    .cal-arrow-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: #f8eded;
+      color: #6e2437;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .cal-arrow-btn:hover {
+      background: #ebd4d8;
+    }
+    .cal-month-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #612232;
+    }
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #8c7d81;
+      margin-bottom: 6px;
+    }
+    .cal-sun-header {
+      color: #df538a;
+    }
+    .cal-days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+    .cal-day-cell {
+      height: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.84rem;
+      font-weight: 600;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .cal-day-cell.empty {
+      cursor: default;
+      pointer-events: none;
+    }
+    .cal-day-cell.disabled {
+      color: #ccc;
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: transparent;
+    }
+    .cal-day-cell.sunday-avail {
+      color: #df538a;
+      background: #fff0f5;
+      font-weight: 700;
+      border: 1px solid #fed8e4;
+    }
+    .cal-day-cell.sunday-avail:hover {
+      background: #df538a;
+      color: #ffffff;
+      transform: scale(1.12);
+    }
+    .cal-day-cell.holiday-avail {
+      color: #2b7a4b;
+      background: #f0f9f3;
+      font-weight: 700;
+      border: 1px solid #c7e9d2;
+    }
+    .cal-day-cell.holiday-avail:hover {
+      background: #2b7a4b;
+      color: #ffffff;
+      transform: scale(1.12);
+    }
+    .cal-day-cell.selected {
+      background: #df538a !important;
+      color: #ffffff !important;
+      transform: scale(1.08);
+      box-shadow: 0 4px 12px rgba(223, 83, 138, 0.45);
+    }
+    .cal-legend {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed #e8dede;
+      font-size: 0.68rem;
+      color: #665257;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .sun-dot { background: #df538a; }
+    .hol-dot { background: #2b7a4b; }
+    .lock-dot { background: #bbb; }
+
+    /* Stage 3 Confirmed Card */
+    .confirmed-card {
+      background: #f7f9f6;
+      color: #382a2e;
+      border-radius: 32px;
+      padding: 38px 30px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65);
+      width: 92vw;
+      max-width: 410px;
+      text-align: center;
+    }
+    .confirmed-badge {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+    }
+    .confirmed-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #5c1f30;
+      margin-bottom: 4px;
+    }
+    .confirmed-sub {
+      font-size: 0.85rem;
+      color: #8c4c5c;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+    .confirmed-details-box {
+      background: #ffffff;
+      border: 1.5px solid #e8dede;
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .confirm-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .confirm-detail-item:last-child {
+      margin-bottom: 0;
+    }
+    .confirm-item-icon {
+      font-size: 1.4rem;
+      width: 32px;
+      text-align: center;
+    }
+    .confirm-item-text .confirm-item-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #998388;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+    }
+    .confirm-item-text .confirm-item-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #3b282d;
+    }
+    .confirmed-fun-text {
+      font-size: 0.85rem;
+      color: #5c3841;
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+    .btn-whatsapp-share {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      background: #25D366;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-whatsapp-share:hover {
+      background: #20ba5a;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+    }
+    .btn-change-choice {
+      border: none;
+      background: transparent;
+      color: #8c364d;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -402,17 +918,135 @@
   <button class="btn-no" id="btnNo">No 🤨</button>
 
   <div class="success-overlay" id="successOverlay">
-    <div class="success-gif-wrapper" id="gifWrapper">
-      <img src="will-you-be-mine-will-you-be-my-girlfriend.gif" alt="Will you be mine?" />
+    <!-- Stage 1: Cat GIF + Yay Message -->
+    <div id="successStage1">
+      <div class="success-gif-wrapper" id="gifWrapper">
+        <img src="will-you-be-mine-will-you-be-my-girlfriend.gif" alt="Will you be mine?" />
+      </div>
+      <p class="success-message">Yay! You said YES! 💖</p>
+      <p class="success-sub">chalte phir road trip par Darjeeling ke pahadon par Maggi date par. but dhakaa mat mar dena 🤣</p>
+      <div class="success-hearts">
+        <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </div>
+      <button type="button" class="btn-next-step" id="btnNextStep" onclick="showDateChooser()">
+        Next: Pick a Date! 🗓️🐾
+      </button>
     </div>
-    <p class="success-message">Yay! You said YES! 💖</p>
-    <p class="success-sub">chalte phir road trip par Darjeeling ke pahadon par Maggi date par. but dhakaa mat mar dena 🤣</p>
-    <div class="success-hearts">
-      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      <svg class="success-heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+
+    <!-- Stage 2: Date & Time Chooser Card (Matching Reference Image) -->
+    <div id="successStage2">
+      <div class="date-card" id="dateCard">
+        <button type="button" class="date-back-btn" onclick="backToSuccessStage1()">← Back</button>
+        
+        <div class="date-header-badge">
+          <div class="mini-calendar-icon">
+            <div class="mini-cal-month" id="miniCalMonth">SEP</div>
+            <div class="mini-cal-day" id="miniCalDay">17</div>
+          </div>
+          <span class="paw-prints">🐾🐾</span>
+        </div>
+
+        <h2 class="date-title">So... when are you free?</h2>
+        <span class="date-rule-badge">🌴 Only Sundays & Holidays are available</span>
+
+        <div class="date-form-group">
+          <label class="date-form-label" for="selectedDateInput">Pick a Day 📅</label>
+          <div class="date-input-wrapper" id="dateInputWrapper" onclick="toggleCalendar(event)">
+            <input type="text" id="selectedDateInput" placeholder="dd/mm/yyyy" readonly />
+            <span class="cal-toggle-icon">🗓️</span>
+          </div>
+
+          <!-- Popup Calendar restricted to Sundays & Holidays -->
+          <div class="calendar-popup" id="calendarPopup" onclick="event.stopPropagation()">
+            <div class="cal-nav-bar">
+              <button type="button" class="cal-arrow-btn" onclick="navMonth(-1)">‹</button>
+              <span class="cal-month-title" id="calMonthTitle">September 2026</span>
+              <button type="button" class="cal-arrow-btn" onclick="navMonth(1)">›</button>
+            </div>
+            <div class="cal-weekdays">
+              <span class="cal-sun-header">Su</span>
+              <span>Mo</span>
+              <span>Tu</span>
+              <span>We</span>
+              <span>Th</span>
+              <span>Fr</span>
+              <span>Sa</span>
+            </div>
+            <div class="cal-days-grid" id="calDaysGrid"></div>
+            <div class="cal-legend">
+              <span class="legend-item"><span class="legend-dot sun-dot"></span> Sundays ☀️</span>
+              <span class="legend-item"><span class="legend-dot hol-dot"></span> Holidays 🌴</span>
+              <span class="legend-item"><span class="legend-dot lock-dot"></span> Others 🔒</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="date-form-group">
+          <label class="date-form-label" for="timeSelect">What Time? ⏰</label>
+          <div class="time-select-wrapper">
+            <select id="timeSelect">
+              <option value="" disabled selected>Select a time...</option>
+              <option value="10:00 AM">Morning Maggi & Sunshine ☕ (10:00 AM)</option>
+              <option value="01:00 PM">Darjeeling Mountain Breeze 🏍️ (1:00 PM)</option>
+              <option value="05:00 PM">Sunset Chai & Maggi Date 🌄 (5:00 PM)</option>
+              <option value="07:30 PM">Chilly Night & Hot Noodles 🍜 (7:30 PM)</option>
+              <option value="09:00 PM">Stargazing & Long Talks ✨ (9:00 PM)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="dateAlertMsg" class="date-alert-msg"></div>
+
+        <button type="button" class="btn-set-date" id="btnSetDate" onclick="submitDateChoice()">
+          set the date! ♥
+        </button>
+      </div>
+    </div>
+
+    <!-- Stage 3: Confirmed Screen -->
+    <div id="successStage3">
+      <div class="confirmed-card">
+        <div class="confirmed-badge">💍💖🎉</div>
+        <h2 class="confirmed-title">It's a Date!</h2>
+        <p class="confirmed-sub">Darjeeling Trip & Maggi Date is Locked!</p>
+
+        <div class="confirmed-details-box">
+          <div class="confirm-detail-item">
+            <span class="confirm-item-icon">📅</span>
+            <div class="confirm-item-text">
+              <span class="confirm-item-label">Chosen Day</span>
+              <span class="confirm-item-val" id="confirmedDayText">-</span>
+            </div>
+          </div>
+          <div class="confirm-detail-item">
+            <span class="confirm-item-icon">⏰</span>
+            <div class="confirm-item-text">
+              <span class="confirm-item-label">Meeting Time</span>
+              <span class="confirm-item-val" id="confirmedTimeText">-</span>
+            </div>
+          </div>
+          <div class="confirm-detail-item">
+            <span class="confirm-item-icon">📍</span>
+            <div class="confirm-item-text">
+              <span class="confirm-item-label">Trip Plan</span>
+              <span class="confirm-item-val">Darjeeling ke Pahad (Maggi Date) 🏍️🏔️🍜</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="confirmed-fun-text">Pahadon par Maggi date confirmed... but remember: <strong>dhakaa mat mar dena! 🤣❤️</strong></p>
+
+        <a id="whatsappShareBtn" class="btn-whatsapp-share" target="_blank">
+          Send to Me on WhatsApp 📲
+        </a>
+        <button type="button" class="btn-change-choice" onclick="reopenDateChooser()">
+          Change Date / Time 🗓️
+        </button>
+      </div>
     </div>
   </div>
 
@@ -649,6 +1283,312 @@
         musicOffIcon.style.display = 'block';
       }
     });
+  }
+
+  /* ─────────────────────────────────────────
+     DATE CHOOSER & CALENDAR LOGIC (Sundays & Holidays Only)
+  ──────────────────────────────────────── */
+  let calCurrentDate = new Date();
+  let selectedDateObj = null;
+  let selectedDateStr = "";
+  let selectedSpecialType = "";
+
+  const MONTH_NAMES = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const MONTH_SHORT = [
+    "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+  ];
+
+  // Recognized Holidays
+  const HOLIDAYS = {
+    // Annual recurring
+    "01-01": "New Year's Day 🎉",
+    "01-26": "Republic Day 🇮🇳",
+    "02-14": "Valentine's Day 💖",
+    "03-08": "Women's Day 🌸",
+    "05-01": "May Day 🛠️",
+    "08-15": "Independence Day 🇮🇳",
+    "10-02": "Gandhi Jayanti 🕊️",
+    "12-25": "Christmas 🎄",
+    "12-31": "New Year's Eve 🎆",
+    // 2026 festival holidays
+    "2026-03-03": "Chhoti Holi 🎨",
+    "2026-03-04": "Holi 🎨",
+    "2026-03-20": "Eid-ul-Fitr 🌙",
+    "2026-04-03": "Good Friday ✝️",
+    "2026-04-14": "Bengali New Year 🌾",
+    "2026-05-01": "Buddha Purnima 🪷",
+    "2026-05-27": "Eid-ul-Adha 🌙",
+    "2026-08-28": "Raksha Bandhan 🧵",
+    "2026-09-04": "Janmashtami 🦚",
+    "2026-10-19": "Maha Saptami 🪔",
+    "2026-10-20": "Maha Ashtami 🪔",
+    "2026-10-21": "Dussehra / Dashami 🏹",
+    "2026-11-08": "Diwali 🪔✨",
+    "2026-11-09": "Govardhan Puja 🪔",
+    "2026-11-11": "Bhai Dooj 💖",
+    "2026-11-15": "Chhath Puja 🌅",
+    "2026-11-24": "Guru Nanak Jayanti 🪔",
+    // 2027 festival holidays
+    "2027-03-22": "Holi 🎨",
+    "2027-03-26": "Good Friday ✝️",
+    "2027-10-09": "Dussehra 🏹",
+    "2027-10-29": "Diwali 🪔"
+  };
+
+  function checkDayAvailability(year, monthIndex, day, dayOfWeek) {
+    const mm = String(monthIndex + 1).padStart(2, '0');
+    const dd = String(day).padStart(2, '0');
+    const yyyymmdd = `${year}-${mm}-${dd}`;
+    const mmdd = `${mm}-${dd}`;
+
+    if (HOLIDAYS[yyyymmdd]) {
+      return { available: true, type: 'holiday', name: HOLIDAYS[yyyymmdd] };
+    }
+    if (HOLIDAYS[mmdd]) {
+      return { available: true, type: 'holiday', name: HOLIDAYS[mmdd] };
+    }
+    if (dayOfWeek === 0) {
+      return { available: true, type: 'sunday', name: 'Sunday ☀️' };
+    }
+    return { available: false, type: 'workday', name: 'Workday 🔒' };
+  }
+
+  function renderCalendar() {
+    const year = calCurrentDate.getFullYear();
+    const month = calCurrentDate.getMonth();
+
+    const monthTitle = document.getElementById('calMonthTitle');
+    if (monthTitle) {
+      monthTitle.textContent = `${MONTH_NAMES[month]} ${year}`;
+    }
+
+    const grid = document.getElementById('calDaysGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Empty padding cells before 1st of month
+    for (let i = 0; i < firstDayIndex; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-day-cell empty';
+      grid.appendChild(cell);
+    }
+
+    // Actual days
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dayOfWeek = (firstDayIndex + d - 1) % 7;
+      const status = checkDayAvailability(year, month, d, dayOfWeek);
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-day-cell';
+      cell.textContent = d;
+
+      if (!status.available) {
+        cell.classList.add('disabled');
+        cell.title = "Only Sundays and Holidays allowed 😉";
+        cell.onclick = function(e) {
+          e.stopPropagation();
+          const alertEl = document.getElementById('dateAlertMsg');
+          if (alertEl) {
+            alertEl.textContent = "Only Sundays & Holidays are available to pick! 🌴☀️";
+            setTimeout(() => { if (alertEl.textContent.includes('Only Sundays')) alertEl.textContent = ''; }, 2500);
+          }
+        };
+      } else {
+        if (status.type === 'sunday') {
+          cell.classList.add('sunday-avail');
+          cell.title = "Sunday ☀️ Available!";
+        } else {
+          cell.classList.add('holiday-avail');
+          cell.title = `Holiday: ${status.name}`;
+        }
+
+        // Selected state
+        if (selectedDateObj &&
+            selectedDateObj.getFullYear() === year &&
+            selectedDateObj.getMonth() === month &&
+            selectedDateObj.getDate() === d) {
+          cell.classList.add('selected');
+        }
+
+        cell.onclick = function(e) {
+          e.stopPropagation();
+          selectDate(year, month, d, status);
+        };
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function selectDate(year, month, day, status) {
+    selectedDateObj = new Date(year, month, day);
+    const dd = String(day).padStart(2, '0');
+    const mm = String(month + 1).padStart(2, '0');
+    selectedDateStr = `${dd}/${mm}/${year}`;
+    selectedSpecialType = status.name;
+
+    const input = document.getElementById('selectedDateInput');
+    if (input) {
+      input.value = `${selectedDateStr} (${status.name})`;
+    }
+
+    // Update mini calendar icon
+    const miniMonth = document.getElementById('miniCalMonth');
+    const miniDay = document.getElementById('miniCalDay');
+    if (miniMonth) miniMonth.textContent = MONTH_SHORT[month];
+    if (miniDay) miniDay.textContent = day;
+
+    // Close popup
+    const popup = document.getElementById('calendarPopup');
+    const wrapper = document.getElementById('dateInputWrapper');
+    if (popup) popup.classList.remove('open');
+    if (wrapper) wrapper.classList.remove('active');
+
+    const alertEl = document.getElementById('dateAlertMsg');
+    if (alertEl) alertEl.textContent = '';
+
+    renderCalendar();
+  }
+
+  function navMonth(dir) {
+    calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
+    renderCalendar();
+  }
+
+  function toggleCalendar(e) {
+    if (e) e.stopPropagation();
+    const popup = document.getElementById('calendarPopup');
+    const wrapper = document.getElementById('dateInputWrapper');
+    if (popup) {
+      const isOpen = popup.classList.toggle('open');
+      if (wrapper) wrapper.classList.toggle('active', isOpen);
+      if (isOpen) renderCalendar();
+    }
+  }
+
+  // Close calendar popup on click outside
+  document.addEventListener('click', function(e) {
+    const popup = document.getElementById('calendarPopup');
+    const wrapper = document.getElementById('dateInputWrapper');
+    if (popup && popup.classList.contains('open')) {
+      if (!popup.contains(e.target) && !wrapper.contains(e.target)) {
+        popup.classList.remove('open');
+        wrapper.classList.remove('active');
+      }
+    }
+  });
+
+  /* Stage navigation */
+  function showDateChooser() {
+    const s1 = document.getElementById('successStage1');
+    const s2 = document.getElementById('successStage2');
+    const s3 = document.getElementById('successStage3');
+    if (s1) s1.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (s2) {
+      s2.style.display = 'flex';
+      renderCalendar();
+    }
+  }
+
+  function backToSuccessStage1() {
+    const s1 = document.getElementById('successStage1');
+    const s2 = document.getElementById('successStage2');
+    const s3 = document.getElementById('successStage3');
+    if (s2) s2.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (s1) s1.style.display = 'flex';
+  }
+
+  function reopenDateChooser() {
+    const s1 = document.getElementById('successStage1');
+    const s2 = document.getElementById('successStage2');
+    const s3 = document.getElementById('successStage3');
+    if (s1) s1.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (s2) s2.style.display = 'flex';
+  }
+
+  function submitDateChoice() {
+    const alertEl = document.getElementById('dateAlertMsg');
+    const timeSelect = document.getElementById('timeSelect');
+
+    if (!selectedDateObj) {
+      if (alertEl) alertEl.textContent = "Please pick a Sunday or Holiday first! 🗓️💕";
+      toggleCalendar();
+      return;
+    }
+
+    if (!timeSelect || !timeSelect.value) {
+      if (alertEl) alertEl.textContent = "Please select a meeting time! ⏰";
+      timeSelect.focus();
+      return;
+    }
+
+    const chosenTime = timeSelect.value;
+    const chosenTimeText = timeSelect.options[timeSelect.selectedIndex].text;
+
+    // Burst confetti!
+    burstCelebrationConfetti();
+
+    // Show Stage 3
+    const s1 = document.getElementById('successStage1');
+    const s2 = document.getElementById('successStage2');
+    const s3 = document.getElementById('successStage3');
+    if (s1) s1.style.display = 'none';
+    if (s2) s2.style.display = 'none';
+    if (s3) s3.style.display = 'flex';
+
+    // Populate details
+    const dayDisplay = document.getElementById('confirmedDayText');
+    const timeDisplay = document.getElementById('confirmedTimeText');
+    if (dayDisplay) dayDisplay.textContent = `${selectedDateStr} (${selectedSpecialType})`;
+    if (timeDisplay) timeDisplay.textContent = chosenTimeText;
+
+    // Configure WhatsApp share button
+    const waBtn = document.getElementById('whatsappShareBtn');
+    if (waBtn) {
+      const msg = `Hey! ❤️ I chose our date for the Darjeeling Maggi trip on ${selectedDateStr} (${selectedSpecialType}) at ${chosenTime}! Pahadon par Maggi is on you! 🏍️🏔️🍜`;
+      waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    }
+  }
+
+  function burstCelebrationConfetti() {
+    const colors = ['#ff4e8a', '#ff1a6b', '#ff758c', '#ffa4b6', '#ff4757', '#ffd700'];
+    for (let i = 0; i < 40; i++) {
+      const h = document.createElement('div');
+      h.className = 'confetti-heart';
+      const size = 14 + Math.random() * 16;
+      h.style.width = size + 'px';
+      h.style.height = size + 'px';
+      h.style.color = colors[Math.floor(Math.random() * colors.length)];
+      h.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      `;
+      const angle = (i / 40) * 360;
+      const dist = 140 + Math.random() * 260;
+      const tx = Math.cos(angle * Math.PI / 180) * dist;
+      const ty = Math.sin(angle * Math.PI / 180) * dist;
+      const rot = (Math.random() * 720 - 360);
+      h.style.left = (window.innerWidth / 2) + 'px';
+      h.style.top = (window.innerHeight / 2) + 'px';
+      h.style.setProperty('--tx', tx + 'px');
+      h.style.setProperty('--ty', ty + 'px');
+      h.style.setProperty('--rot', rot + 'deg');
+      h.style.animationDelay = (Math.random() * 0.15) + 's';
+      h.style.animationDuration = (1.0 + Math.random() * 0.6) + 's';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 2000);
+    }
   }
 </script>
 </body>
