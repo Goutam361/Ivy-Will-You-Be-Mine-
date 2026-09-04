@@ -57,116 +57,226 @@
       50%       { transform: scale(1.4) translate(20px, -20px); opacity: 0.25; }
     }
 
-    /* Premium glassmorphism card */
-    .card {
+    /* ─────────────────────────────────────────
+       3D REALISTIC LOVE LETTER ENVELOPE (Matching Reference)
+    ──────────────────────────────────────── */
+    .envelope-wrapper {
       position: relative;
       z-index: 10;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 105, 180, 0.07) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 36px;
-      padding: 64px 60px 52px;
+      margin: 40px auto 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      perspective: 1000px;
+    }
+
+    #envelope {
+      position: relative;
+      width: 360px;
+      height: 230px;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      background-color: #d83a56;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 20, 147, 0.3);
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+    #envelope:hover {
+      transform: translateY(-4px);
+    }
+
+    .front {
+      position: absolute;
+      width: 0;
+      height: 0;
+      z-index: 3;
+    }
+
+    /* Top triangular flap that folds open */
+    .flap {
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-top: 130px solid #f25c7e;
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.3s;
+      z-index: 5;
+      top: 0;
+      left: 0;
+      position: absolute;
+    }
+
+    /* Bottom pocket containing the letter */
+    .pocket {
+      border-left: 180px solid #ff758f;
+      border-right: 180px solid #ff758f;
+      border-bottom: 140px solid #ff597b;
+      border-top: 100px solid transparent;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      z-index: 4;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+    }
+
+    /* The letter card sliding out */
+    .letter {
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      bottom: 0;
+      height: 260px;
+      background: #ffffff;
+      border-radius: 14px;
+      z-index: 2;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, z-index 0.1s ease 0.35s, box-shadow 0.4s ease;
+      padding: 24px 20px 20px;
       text-align: center;
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      max-width: 520px;
-      width: 92vw;
-      animation: cardPulse 5s ease-in-out infinite;
-    }
-    @keyframes cardPulse {
-      0%, 100% { box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12); }
-      50%       { box-shadow: 0 40px 120px rgba(255, 20, 147, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #333;
     }
 
-    /* Luxury badge styled emoji row */
-    .emoji-row {
-      display: inline-block;
-      font-size: 1.25rem;
-      padding: 6px 20px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 30px;
-      margin-bottom: 28px;
-      letter-spacing: 6px;
-      text-indent: 6px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      animation: floatBadge 3s ease-in-out infinite;
+    /* Top heart wax seal */
+    .heart-seal {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.8rem;
+      filter: drop-shadow(0 4px 10px rgba(255, 20, 147, 0.5));
+      animation: sealPulse 2s ease-in-out infinite;
+      z-index: 10;
+      user-select: none;
     }
-    @keyframes floatBadge {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-5px); }
+    @keyframes sealPulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50%       { transform: translateX(-50%) scale(1.12); }
     }
 
-    /* Serif playfair elegant typography */
-    .question-text {
+    /* Letter interior typography */
+    .letter-header {
       font-family: 'Playfair Display', serif;
-      font-weight: 600;
       font-style: italic;
-      font-size: clamp(1.6rem, 5vw, 2.5rem);
-      color: #ffffff;
-      line-height: 1.4;
-      margin-bottom: 12px;
-      letter-spacing: 0.5px;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      font-size: 1.25rem;
+      color: #c9184a;
+      font-weight: 600;
+      margin-top: 4px;
     }
 
-    .sub-text {
-      font-size: 0.78rem;
-      color: rgba(255, 182, 193, 0.7);
-      margin-bottom: 44px;
-      font-weight: 500;
-      letter-spacing: 2px;
+    .letter-message {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.35;
+      margin: 6px 0;
+    }
+
+    .letter-sub {
+      font-size: 0.8rem;
+      color: #888;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 8px;
+    }
+
+    /* Envelope Open State */
+    #envelope.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    #envelope.open .letter {
+      transform: translateY(-200px);
+      z-index: 6;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 105, 180, 0.35);
+    }
+
+    /* Action Buttons (OPEN / CLOSE) */
+    .envelope-actions {
+      display: flex;
+      gap: 18px;
+      margin-top: 36px;
+      z-index: 10;
+    }
+
+    .btn-action {
+      padding: 12px 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-action.open-btn {
+      background: #ffffff;
+      color: #c9184a;
+      border: 2px solid #c9184a;
+      box-shadow: 0 6px 20px rgba(201, 24, 74, 0.25);
+    }
+    .btn-action.open-btn:hover {
+      background: #c9184a;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201, 24, 74, 0.45);
     }
 
+    .btn-action.close-btn {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+    }
+    .btn-action.close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* Inside-letter YES & NO buttons */
     .buttons {
       display: flex;
-      gap: 24px;
+      gap: 16px;
       justify-content: center;
       align-items: center;
-      flex-wrap: wrap;
-      position: relative;
+      width: 100%;
+      margin-top: 4px;
     }
 
-    /* Premium YES button with floating pulse */
     .btn-yes {
-      padding: 16px 48px;
+      padding: 12px 28px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       border: none;
       border-radius: 50px;
       cursor: pointer;
       background: linear-gradient(135deg, #ff4e8a, #ff1a6b);
       color: #fff;
-      box-shadow: 0 8px 30px rgba(255, 26, 107, 0.4);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-yes::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
-      border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(255, 26, 107, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
     .btn-yes:hover {
-      transform: scale(1.06) translateY(-2px);
-      box-shadow: 0 16px 40px rgba(255, 26, 107, 0.6);
+      transform: scale(1.06);
+      box-shadow: 0 10px 28px rgba(255, 26, 107, 0.6);
     }
-    .btn-yes:active { transform: scale(0.96); }
 
-    /* Bold red NO button */
     .btn-no {
-      padding: 16px 48px;
+      padding: 12px 28px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       border: 2px solid #e63946;
       border-radius: 50px;
       cursor: pointer;
@@ -175,8 +285,8 @@
       z-index: 100;
       user-select: none;
       white-space: nowrap;
-      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 8px 30px rgba(230, 57, 70, 0.4);
+      transition: background 0.3s, border-color 0.3s;
+      box-shadow: 0 6px 20px rgba(230, 57, 70, 0.35);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1061,7 +1171,7 @@
       #mobileBlocker {
         display: flex !important;
       }
-      #mainCard, #btnNo, #musicToggle, #successOverlay {
+      #envelopeWrapper, #btnNo, #musicToggle, #successOverlay {
         display: none !important;
       }
     }
@@ -1088,19 +1198,33 @@
   <div class="hearts-bg" id="heartsBg"></div>
   <div id="particleContainer"></div>
 
-  <div class="card" id="mainCard">
-    <span class="emoji-row">💌 🌹 💕</span>
-    <h1 class="question-text">
-      Can I ask you for a date? 💕
-    </h1>
+  <!-- 3D Realistic Animated Envelope Proposal (Matching Reference) -->
+  <div class="envelope-wrapper" id="envelopeWrapper">
+    <div id="envelope" class="close" onclick="toggleEnvelope()">
+      <div class="front flap"></div>
+      <div class="front pocket"></div>
+      <div class="letter" id="letterCard">
+        <div class="heart-seal">💖</div>
+        <div class="letter-header">To: Ivy 💕</div>
+        <div class="letter-message">
+          Can I ask you for a date? 🌹
+        </div>
+        <div class="letter-sub">(Say yes please! 🥰)</div>
+        <div class="buttons" id="buttonsArea">
+          <button class="btn-yes" id="btnYes" onclick="onYesClick(event)">
+            💗 Yes!
+          </button>
+          <button class="btn-no" id="btnNo">
+            NO 🤨
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <div class="buttons" id="buttonsArea">
-      <button class="btn-yes" id="btnYes" onclick="onYesClick(event)">
-        💗 Yes!
-      </button>
-      <button class="btn-no" id="btnNo">
-        NO 🤨
-      </button>
+    <!-- Action Buttons matching reference -->
+    <div class="envelope-actions">
+      <button type="button" class="btn-action open-btn" id="btnOpen" onclick="openEnvelope()">OPEN 💌</button>
+      <button type="button" class="btn-action close-btn" id="btnClose" onclick="closeEnvelope()">CLOSE ✉️</button>
     </div>
   </div>
 
@@ -1356,6 +1480,38 @@
   }
 
   /* ─────────────────────────────────────────
+     ENVELOPE CONTROLS (Open / Close Love Letter)
+  ──────────────────────────────────────── */
+  function openEnvelope() {
+    const env = document.getElementById('envelope');
+    if (env) {
+      env.classList.remove('close');
+      env.classList.add('open');
+    }
+    // Start 1st-part.mp4 music on opening
+    playBgm();
+  }
+
+  function closeEnvelope() {
+    const env = document.getElementById('envelope');
+    if (env) {
+      env.classList.remove('open');
+      env.classList.add('close');
+    }
+  }
+
+  function toggleEnvelope() {
+    const env = document.getElementById('envelope');
+    if (env) {
+      if (env.classList.contains('open')) {
+        closeEnvelope();
+      } else {
+        openEnvelope();
+      }
+    }
+  }
+
+  /* ─────────────────────────────────────────
      NO BUTTON – DODGE LOGIC
   ──────────────────────────────────────── */
   const btnNo = document.getElementById('btnNo');
@@ -1365,6 +1521,10 @@
   let noX = 0, noY = 0;
 
   function activateAndDodge() {
+    // Only dodge if envelope is open
+    const env = document.getElementById('envelope');
+    if (env && !env.classList.contains('open')) return;
+
     if (!hasDodged) {
       const rect = btnNo.getBoundingClientRect();
       noX = rect.left;
@@ -1373,6 +1533,7 @@
       btnNo.style.left = noX + 'px';
       btnNo.style.top  = noY + 'px';
       btnNo.style.margin = '0';
+      btnNo.style.zIndex = '999';
       document.body.appendChild(btnNo);
       hasDodged = true;
     }
@@ -1383,7 +1544,7 @@
     const w = btnNo.offsetWidth  || 120;
     const h = btnNo.offsetHeight || 48;
     let pos, attempts = 0;
-    const card = document.getElementById('mainCard');
+    const card = document.getElementById('letterCard') || document.getElementById('envelope');
     const cardRect = card ? card.getBoundingClientRect() : null;
     const minDodge = window.innerWidth < 600 ? 100 : 180;
     
@@ -1413,7 +1574,6 @@
     btnNo.style.left = noX + 'px';
     btnNo.style.top  = noY + 'px';
     setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s, border-color 0.3s'; }, 300);
-
   }
 
   document.addEventListener('mousemove', function(e) {
