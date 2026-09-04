@@ -1502,6 +1502,17 @@
     bgm.load();
   }
 
+  // Desktop interaction unlock events
+  const unlockEvents = ['pointerdown', 'mousedown', 'click', 'touchstart', 'keydown'];
+
+  function cleanupUnlockListeners() {
+    unlockEvents.forEach(evt => document.removeEventListener(evt, onUserGesture, true));
+  }
+
+  function onUserGesture() {
+    playBgm();
+  }
+
   function playBgm() {
     if (isMobile) return; // Strict block: NO music on mobile
     if (bgm && !isPlaying) {
@@ -1510,8 +1521,9 @@
       if (p !== undefined) {
         p.then(() => {
           isPlaying = true;
+          cleanupUnlockListeners();
         }).catch(err => {
-          console.log("Waiting for user gesture:", err);
+          console.log("Waiting for user click to start audio:", err);
         });
       }
     }
@@ -1523,13 +1535,8 @@
     document.addEventListener('DOMContentLoaded', playBgm);
     window.addEventListener('load', playBgm);
 
-    // Fallback unlock on first user gesture for desktop
-    const gestureEvents = ['pointerdown', 'mousedown', 'mousemove', 'keydown', 'scroll', 'click'];
-    function unlockAudioOnGesture() {
-      playBgm();
-      gestureEvents.forEach(evt => document.removeEventListener(evt, unlockAudioOnGesture));
-    }
-    gestureEvents.forEach(evt => document.addEventListener(evt, unlockAudioOnGesture, { once: true, passive: true }));
+    // Keep listeners in capture mode until audio successfully begins playing
+    unlockEvents.forEach(evt => document.addEventListener(evt, onUserGesture, { capture: true, passive: true }));
   }
 
   // Gun SFX plays once on first touch/tap on mobile
