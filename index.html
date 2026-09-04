@@ -1395,12 +1395,6 @@
     btnNo.style.top  = noY + 'px';
     setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s, border-color 0.3s'; }, 300);
 
-    // Play gun SFX on every dodge
-    const gunSfx = document.getElementById('gunSfx');
-    if (gunSfx) {
-      gunSfx.currentTime = 0;
-      gunSfx.play().catch(() => {});
-    }
   }
 
   document.addEventListener('mousemove', function(e) {
@@ -1541,14 +1535,17 @@
   // Attempt to play on first user touch/tap/click on screen
   document.addEventListener('click', function startOnInteraction() {
     playBgm();
+    // Play gun SFX once at page start
+    const gunSfx = document.getElementById('gunSfx');
+    if (gunSfx) { gunSfx.currentTime = 0; gunSfx.play().catch(() => {}); }
     document.removeEventListener('click', startOnInteraction);
   }, { once: true });
 
   document.addEventListener('touchstart', function startOnTouch() {
     playBgm();
-    // Unlock gun SFX on mobile
+    // Play gun SFX once at page start (mobile)
     const gunSfx = document.getElementById('gunSfx');
-    if (gunSfx) { gunSfx.load(); }
+    if (gunSfx) { gunSfx.currentTime = 0; gunSfx.play().catch(() => {}); }
     document.removeEventListener('touchstart', startOnTouch);
   }, { once: true });
 
