@@ -1440,7 +1440,7 @@
      YES BUTTON CLICK
   ──────────────────────────────────────── */
   function onYesClick(e) {
-    if (bgm) {
+    if (bgm && !isMobile) {
       bgm.src = '2nd-part.mp4';
       bgm.currentTime = 0;
       bgm.play().then(() => {
@@ -1511,7 +1511,11 @@
   const musicOffIcon = document.getElementById('musicOffIcon');
   let isPlaying = false;
 
+  const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)
+                || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+
   function playBgm() {
+    if (isMobile) return; // Mobile: no BGM, gun SFX only
     if (!isPlaying && bgm) {
       bgm.play().then(() => {
         isPlaying = true;
@@ -1522,6 +1526,10 @@
       });
     }
   }
+
+  // Hide music toggle button on mobile (no BGM on mobile)
+  if (isMobile && musicToggle) musicToggle.style.display = 'none';
+
 
   // Attempt to play on first user touch/tap/click on screen
   document.addEventListener('click', function startOnInteraction() {
