@@ -1081,7 +1081,10 @@
   </div>
 
   <!-- Audio element for BGM -->
-  <audio id="bgm" src="1st-part.mp4" loop></audio>
+  <audio id="bgm" src="music.mp3" loop></audio>
+  <!-- Gun SFX for NO button dodge -->
+  <audio id="gunSfx" src="gun sfx.mp4" preload="auto"></audio>
+
 
   <!-- Floating Music Toggle Button -->
   <button id="musicToggle" class="music-toggle" aria-label="Toggle Music">
@@ -1138,13 +1141,8 @@
       <div class="date-card" id="dateCard">
         <button type="button" class="date-back-btn" onclick="backToSuccessStage1()">← Back</button>
         
-        <div class="date-header-badge">
-          <div class="mini-calendar-icon">
-            <div class="mini-cal-month" id="miniCalMonth">SEP</div>
-            <div class="mini-cal-day" id="miniCalDay">17</div>
-          </div>
-          <span class="paw-prints">🐾🐾</span>
-        </div>
+
+
 
         <h2 class="date-title">So... when are you free?</h2>
 
@@ -1396,6 +1394,13 @@
     btnNo.style.left = noX + 'px';
     btnNo.style.top  = noY + 'px';
     setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s, border-color 0.3s'; }, 300);
+
+    // Play gun SFX on every dodge
+    const gunSfx = document.getElementById('gunSfx');
+    if (gunSfx) {
+      gunSfx.currentTime = 0;
+      gunSfx.play().catch(() => {});
+    }
   }
 
   document.addEventListener('mousemove', function(e) {
@@ -1526,6 +1531,9 @@
 
   document.addEventListener('touchstart', function startOnTouch() {
     playBgm();
+    // Also unlock gun SFX on mobile by loading it
+    const gunSfx = document.getElementById('gunSfx');
+    if (gunSfx) { gunSfx.load(); }
     document.removeEventListener('touchstart', startOnTouch);
   }, { once: true });
 
