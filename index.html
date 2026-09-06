@@ -1445,26 +1445,21 @@
   }
 
   /* ─────────────────────────────────────────
-     NO BUTTON – HAPTIC + JIGGLE & DODGE
+     NO BUTTON – FAST MULTI-BOUNCE RICOCHET DODGE
   ──────────────────────────────────────── */
   const btnNo = document.getElementById('btnNo');
   const DODGE_DIST = 90;
-  const MARGIN = 18;
+  const MARGIN = 16;
   let hasDodged = false;
   let noX = 0, noY = 0;
+  let isBouncing = false;
 
-  function triggerHapticAndJiggle() {
-    // 1. Haptic feedback on mobile
+  function triggerMultiHaptic() {
     if (navigator.vibrate) {
       try {
-        navigator.vibrate([60, 40, 70]);
+        navigator.vibrate([45, 30, 45, 30, 45]);
       } catch (e) {}
     }
-    // 2. Jiggle animation
-    btnNo.classList.remove('jiggling');
-    void btnNo.offsetWidth; // Force reflow
-    btnNo.classList.add('jiggling');
-    setTimeout(() => { btnNo.classList.remove('jiggling'); }, 400);
   }
 
   function activateAndDodge(e) {
@@ -1473,8 +1468,7 @@
     // Only dodge if envelope is open
     const env = document.getElementById('envelope');
     if (env && !env.classList.contains('open')) return;
-
-    triggerHapticAndJiggle();
+    if (isBouncing) return;
 
     if (!hasDodged) {
       const rect = btnNo.getBoundingClientRect();
@@ -1488,47 +1482,81 @@
       document.body.appendChild(btnNo);
       hasDodged = true;
     }
-    dodge();
+
+    triggerMultiHaptic();
+    multiBounceDodge();
   }
 
-  function dodge() {
+  function multiBounceDodge() {
+    isBouncing = true;
     const w = btnNo.offsetWidth  || 110;
     const h = btnNo.offsetHeight || 44;
-    let pos, attempts = 0;
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+    const minX = MARGIN;
+    const maxX = Math.max(MARGIN, winW - w - MARGIN);
+    const minY = MARGIN;
+    const maxY = Math.max(MARGIN, winH - h - MARGIN);
+
+    const startX = noX;
+    const startY = noY;
+
+    // Bounce 1: Fast shoot far away across screen to opposite edge
+    const b1X = startX < winW / 2 ? (maxX - Math.random() * 50) : (minX + Math.random() * 50);
+    const b1Y = startY < winH / 2 ? (maxY - Math.random() * 80) : (minY + Math.random() * 80);
+
+    // Bounce 2: Ricochet sharply across the screen to another wall/corner
+    const b2X = b1X < winW / 2 ? (maxX - Math.random() * 60) : (minX + Math.random() * 60);
+    const b2Y = b1Y < winH / 2 ? (maxY - Math.random() * 100) : (minY + Math.random() * 100);
+
+    // Bounce 3: Secondary rebound
+    const b3X = minX + Math.random() * (maxX - minX);
+    const b3Y = minY + Math.random() * (maxY - minY);
+
+    // Final Landing Point: Safe resting spot, avoiding card/envelope
     const card = document.getElementById('letterCard') || document.getElementById('envelope');
     const cardRect = card ? card.getBoundingClientRect() : null;
-    const minDodge = window.innerWidth < 600 ? 90 : 160;
-    const maxX = Math.max(MARGIN, window.innerWidth  - w - MARGIN);
-    const maxY = Math.max(MARGIN, window.innerHeight - h - MARGIN);
-    
+    let finalX = b3X, finalY = b3Y;
+    let attempts = 0;
     do {
-      pos = {
-        x: MARGIN + Math.random() * (maxX - MARGIN),
-        y: MARGIN + Math.random() * (maxY - MARGIN)
-      };
+      finalX = minX + Math.random() * (maxX - minX);
+      finalY = minY + Math.random() * (maxY - minY);
       attempts++;
-      
       const overlapsCard = cardRect && (
-        pos.x < cardRect.right + 15 &&
-        pos.x + w > cardRect.left - 15 &&
-        pos.y < cardRect.bottom + 15 &&
-        pos.y + h > cardRect.top - 15
+        finalX < cardRect.right + 15 &&
+        finalX + w > cardRect.left - 15 &&
+        finalY < cardRect.bottom + 15 &&
+        finalY + h > cardRect.top - 15
       );
-      
-      if (!overlapsCard || attempts > 20) {
-        if (Math.hypot(pos.x - noX, pos.y - noY) >= minDodge) {
-          break;
-        }
-      }
+      if (!overlapsCard || attempts > 20) break;
     } while (attempts < 35);
-    
-    noX = Math.min(Math.max(MARGIN, pos.x), maxX);
-    noY = Math.min(Math.max(MARGIN, pos.y), maxY);
 
-    btnNo.style.transition = 'left 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.24s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    btnNo.style.left = noX + 'px';
-    btnNo.style.top  = noY + 'px';
-    setTimeout(() => { btnNo.style.transition = 'background 0.2s, color 0.2s, border-color 0.3s'; }, 320);
+    // Dynamic keyframes for ultra-fast ricochet bounce & deceleration
+    const keyframes = [
+      { left: `${startX}px`, top: `${startY}px`, transform: 'scale(1) rotate(0deg)', offset: 0 },
+      { left: `${b1X}px`, top: `${b1Y}px`, transform: 'scale(1.22) rotate(-18deg)', offset: 0.22 },
+      { left: `${b2X}px`, top: `${b2Y}px`, transform: 'scale(1.15) rotate(16deg)', offset: 0.48 },
+      { left: `${b3X}px`, top: `${b3Y}px`, transform: 'scale(1.08) rotate(-8deg)', offset: 0.74 },
+      { left: `${finalX}px`, top: `${finalY}px`, transform: 'scale(1) rotate(0deg)', offset: 1.0 }
+    ];
+
+    btnNo.style.transition = 'none';
+
+    const animation = btnNo.animate(keyframes, {
+      duration: 720,
+      easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.0)',
+      fill: 'forwards'
+    });
+
+    animation.onfinish = function() {
+      noX = finalX;
+      noY = finalY;
+      btnNo.style.left = `${noX}px`;
+      btnNo.style.top  = `${noY}px`;
+      btnNo.style.transform = 'scale(1) rotate(0deg)';
+      animation.cancel();
+      isBouncing = false;
+    };
   }
 
   // Desktop Mouse Movement Proximity
