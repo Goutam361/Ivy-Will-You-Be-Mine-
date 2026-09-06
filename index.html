@@ -1445,7 +1445,7 @@
   }
 
   /* ─────────────────────────────────────────
-     NO BUTTON – FAST MULTI-BOUNCE RICOCHET DODGE
+     NO BUTTON – FAST MULTI-BOUNCE RICOCHET DODGE (Mobile & Desktop)
   ──────────────────────────────────────── */
   const btnNo = document.getElementById('btnNo');
   const DODGE_DIST = 90;
@@ -1457,8 +1457,24 @@
   function triggerMultiHaptic() {
     if (navigator.vibrate) {
       try {
-        navigator.vibrate([45, 30, 45, 30, 45]);
+        navigator.vibrate([40, 30, 40, 30, 40]);
       } catch (e) {}
+    }
+  }
+
+  function ensureFixedPosition() {
+    if (!hasDodged) {
+      const rect = btnNo.getBoundingClientRect();
+      noX = rect.left;
+      noY = rect.top;
+      btnNo.style.position = 'fixed';
+      btnNo.style.left = '0px';
+      btnNo.style.top  = '0px';
+      btnNo.style.transform = `translate3d(${noX}px, ${noY}px, 0)`;
+      btnNo.style.margin = '0';
+      btnNo.style.zIndex = '99999';
+      document.body.appendChild(btnNo);
+      hasDodged = true;
     }
   }
 
@@ -1470,19 +1486,7 @@
     if (env && !env.classList.contains('open')) return;
     if (isBouncing) return;
 
-    if (!hasDodged) {
-      const rect = btnNo.getBoundingClientRect();
-      noX = rect.left;
-      noY = rect.top;
-      btnNo.style.position = 'fixed';
-      btnNo.style.left = noX + 'px';
-      btnNo.style.top  = noY + 'px';
-      btnNo.style.margin = '0';
-      btnNo.style.zIndex = '9999';
-      document.body.appendChild(btnNo);
-      hasDodged = true;
-    }
-
+    ensureFixedPosition();
     triggerMultiHaptic();
     multiBounceDodge();
   }
@@ -1501,11 +1505,11 @@
     const startX = noX;
     const startY = noY;
 
-    // Bounce 1: Fast shoot far away across screen to opposite edge
+    // Bounce 1: Shoot far across screen to opposite edge
     const b1X = startX < winW / 2 ? (maxX - Math.random() * 50) : (minX + Math.random() * 50);
     const b1Y = startY < winH / 2 ? (maxY - Math.random() * 80) : (minY + Math.random() * 80);
 
-    // Bounce 2: Ricochet sharply across the screen to another wall/corner
+    // Bounce 2: Sharp ricochet to another wall/corner
     const b2X = b1X < winW / 2 ? (maxX - Math.random() * 60) : (minX + Math.random() * 60);
     const b2Y = b1Y < winH / 2 ? (maxY - Math.random() * 100) : (minY + Math.random() * 100);
 
@@ -1531,32 +1535,34 @@
       if (!overlapsCard || attempts > 20) break;
     } while (attempts < 35);
 
-    // Dynamic keyframes for ultra-fast ricochet bounce & deceleration
-    const keyframes = [
-      { left: `${startX}px`, top: `${startY}px`, transform: 'scale(1) rotate(0deg)', offset: 0 },
-      { left: `${b1X}px`, top: `${b1Y}px`, transform: 'scale(1.22) rotate(-18deg)', offset: 0.22 },
-      { left: `${b2X}px`, top: `${b2Y}px`, transform: 'scale(1.15) rotate(16deg)', offset: 0.48 },
-      { left: `${b3X}px`, top: `${b3Y}px`, transform: 'scale(1.08) rotate(-8deg)', offset: 0.74 },
-      { left: `${finalX}px`, top: `${finalY}px`, transform: 'scale(1) rotate(0deg)', offset: 1.0 }
-    ];
+    // Create dynamic hardware-accelerated CSS keyframes (works on 100% of mobile browsers)
+    let styleEl = document.getElementById('dynamicRicochetStyle');
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'dynamicRicochetStyle';
+      document.head.appendChild(styleEl);
+    }
 
-    btnNo.style.transition = 'none';
+    const animName = 'ricochetAnim_' + Date.now();
+    styleEl.textContent = `
+      @keyframes ${animName} {
+        0%   { transform: translate3d(${startX}px, ${startY}px, 0) scale(1) rotate(0deg); }
+        22%  { transform: translate3d(${b1X}px, ${b1Y}px, 0) scale(1.22) rotate(-18deg); }
+        48%  { transform: translate3d(${b2X}px, ${b2Y}px, 0) scale(1.15) rotate(16deg); }
+        74%  { transform: translate3d(${b3X}px, ${b3Y}px, 0) scale(1.08) rotate(-8deg); }
+        100% { transform: translate3d(${finalX}px, ${finalY}px, 0) scale(1) rotate(0deg); }
+      }
+    `;
 
-    const animation = btnNo.animate(keyframes, {
-      duration: 720,
-      easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.0)',
-      fill: 'forwards'
-    });
+    btnNo.style.animation = `${animName} 0.72s cubic-bezier(0.18, 0.89, 0.32, 1.0) forwards`;
 
-    animation.onfinish = function() {
+    setTimeout(() => {
+      btnNo.style.animation = '';
+      btnNo.style.transform = `translate3d(${finalX}px, ${finalY}px, 0)`;
       noX = finalX;
       noY = finalY;
-      btnNo.style.left = `${noX}px`;
-      btnNo.style.top  = `${noY}px`;
-      btnNo.style.transform = 'scale(1) rotate(0deg)';
-      animation.cancel();
       isBouncing = false;
-    };
+    }, 730);
   }
 
   // Desktop Mouse Movement Proximity
@@ -1581,7 +1587,18 @@
     }
   }, { passive: true });
 
-  // Mobile & Desktop direct triggers
+  document.addEventListener('touchstart', function(e) {
+    if (!e.touches || e.touches.length === 0) return;
+    const t = e.touches[0];
+    const rect = btnNo.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    if (Math.hypot(t.clientX - cx, t.clientY - cy) < DODGE_DIST) {
+      activateAndDodge();
+    }
+  }, { passive: true });
+
+  // Direct element triggers
   btnNo.addEventListener('mouseenter', activateAndDodge);
   btnNo.addEventListener('touchstart', activateAndDodge, { passive: false });
   btnNo.addEventListener('pointerdown', activateAndDodge, { passive: false });
