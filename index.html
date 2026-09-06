@@ -1149,7 +1149,7 @@
 
   <!-- 3D Realistic Animated Envelope Proposal (Polished) -->
   <div class="envelope-wrapper" id="envelopeWrapper">
-    <div id="envelope" class="close" onclick="toggleEnvelope()">
+    <div id="envelope" class="close" onclick="openEnvelope()">
       <div class="front flap"></div>
       <div class="heart-seal">💖</div>
       <div class="front pocket"></div>
@@ -1413,7 +1413,7 @@
   }
 
   /* ─────────────────────────────────────────
-     ENVELOPE CONTROLS (Open / Close Love Letter)
+     ENVELOPE CONTROLS (Open Love Letter)
   ──────────────────────────────────────── */
   function openEnvelope() {
     const env = document.getElementById('envelope');
@@ -1425,42 +1425,14 @@
     playBgm();
   }
 
-  function closeEnvelope() {
-    const env = document.getElementById('envelope');
-    if (env) {
-      env.classList.remove('open');
-      env.classList.add('close');
-    }
-  }
-
-  function toggleEnvelope() {
-    const env = document.getElementById('envelope');
-    if (env) {
-      if (env.classList.contains('open')) {
-        closeEnvelope();
-      } else {
-        openEnvelope();
-      }
-    }
-  }
-
   /* ─────────────────────────────────────────
-     NO BUTTON – FAST MULTI-BOUNCE RICOCHET DODGE (Mobile & Desktop)
+     NO BUTTON – CLEAN SMOOTH DODGE (Mobile & Desktop)
   ──────────────────────────────────────── */
   const btnNo = document.getElementById('btnNo');
   const DODGE_DIST = 90;
-  const MARGIN = 16;
+  const MARGIN = 18;
   let hasDodged = false;
   let noX = 0, noY = 0;
-  let isBouncing = false;
-
-  function triggerMultiHaptic() {
-    if (navigator.vibrate) {
-      try {
-        navigator.vibrate([40, 30, 40, 30, 40]);
-      } catch (e) {}
-    }
-  }
 
   function ensureFixedPosition() {
     if (!hasDodged) {
@@ -1484,15 +1456,17 @@
     // Only dodge if envelope is open
     const env = document.getElementById('envelope');
     if (env && !env.classList.contains('open')) return;
-    if (isBouncing) return;
 
     ensureFixedPosition();
-    triggerMultiHaptic();
-    multiBounceDodge();
+
+    if (navigator.vibrate) {
+      try { navigator.vibrate(50); } catch (err) {}
+    }
+
+    dodge();
   }
 
-  function multiBounceDodge() {
-    isBouncing = true;
+  function dodge() {
     const w = btnNo.offsetWidth  || 110;
     const h = btnNo.offsetHeight || 44;
     const winW = window.innerWidth;
@@ -1501,68 +1475,38 @@
     const maxX = Math.max(MARGIN, winW - w - MARGIN);
     const minY = MARGIN;
     const maxY = Math.max(MARGIN, winH - h - MARGIN);
+    const minDodge = winW < 600 ? 90 : 160;
 
-    const startX = noX;
-    const startY = noY;
-
-    // Bounce 1: Shoot far across screen to opposite edge
-    const b1X = startX < winW / 2 ? (maxX - Math.random() * 50) : (minX + Math.random() * 50);
-    const b1Y = startY < winH / 2 ? (maxY - Math.random() * 80) : (minY + Math.random() * 80);
-
-    // Bounce 2: Sharp ricochet to another wall/corner
-    const b2X = b1X < winW / 2 ? (maxX - Math.random() * 60) : (minX + Math.random() * 60);
-    const b2Y = b1Y < winH / 2 ? (maxY - Math.random() * 100) : (minY + Math.random() * 100);
-
-    // Bounce 3: Secondary rebound
-    const b3X = minX + Math.random() * (maxX - minX);
-    const b3Y = minY + Math.random() * (maxY - minY);
-
-    // Final Landing Point: Safe resting spot, avoiding card/envelope
     const card = document.getElementById('letterCard') || document.getElementById('envelope');
     const cardRect = card ? card.getBoundingClientRect() : null;
-    let finalX = b3X, finalY = b3Y;
-    let attempts = 0;
+
+    let pos, attempts = 0;
     do {
-      finalX = minX + Math.random() * (maxX - minX);
-      finalY = minY + Math.random() * (maxY - minY);
+      pos = {
+        x: minX + Math.random() * (maxX - minX),
+        y: minY + Math.random() * (maxY - minY)
+      };
       attempts++;
+
       const overlapsCard = cardRect && (
-        finalX < cardRect.right + 15 &&
-        finalX + w > cardRect.left - 15 &&
-        finalY < cardRect.bottom + 15 &&
-        finalY + h > cardRect.top - 15
+        pos.x < cardRect.right + 15 &&
+        pos.x + w > cardRect.left - 15 &&
+        pos.y < cardRect.bottom + 15 &&
+        pos.y + h > cardRect.top - 15
       );
-      if (!overlapsCard || attempts > 20) break;
+
+      if (!overlapsCard || attempts > 20) {
+        if (Math.hypot(pos.x - noX, pos.y - noY) >= minDodge) {
+          break;
+        }
+      }
     } while (attempts < 35);
 
-    // Create dynamic hardware-accelerated CSS keyframes (works on 100% of mobile browsers)
-    let styleEl = document.getElementById('dynamicRicochetStyle');
-    if (!styleEl) {
-      styleEl = document.createElement('style');
-      styleEl.id = 'dynamicRicochetStyle';
-      document.head.appendChild(styleEl);
-    }
+    noX = Math.min(Math.max(minX, pos.x), maxX);
+    noY = Math.min(Math.max(minY, pos.y), maxY);
 
-    const animName = 'ricochetAnim_' + Date.now();
-    styleEl.textContent = `
-      @keyframes ${animName} {
-        0%   { transform: translate3d(${startX}px, ${startY}px, 0) scale(1) rotate(0deg); }
-        22%  { transform: translate3d(${b1X}px, ${b1Y}px, 0) scale(1.22) rotate(-18deg); }
-        48%  { transform: translate3d(${b2X}px, ${b2Y}px, 0) scale(1.15) rotate(16deg); }
-        74%  { transform: translate3d(${b3X}px, ${b3Y}px, 0) scale(1.08) rotate(-8deg); }
-        100% { transform: translate3d(${finalX}px, ${finalY}px, 0) scale(1) rotate(0deg); }
-      }
-    `;
-
-    btnNo.style.animation = `${animName} 0.72s cubic-bezier(0.18, 0.89, 0.32, 1.0) forwards`;
-
-    setTimeout(() => {
-      btnNo.style.animation = '';
-      btnNo.style.transform = `translate3d(${finalX}px, ${finalY}px, 0)`;
-      noX = finalX;
-      noY = finalY;
-      isBouncing = false;
-    }, 730);
+    btnNo.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    btnNo.style.transform = `translate3d(${noX}px, ${noY}px, 0)`;
   }
 
   // Desktop Mouse Movement Proximity
