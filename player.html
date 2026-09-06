@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💍</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: Georgia, serif;
+    }
+    video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: block;
+    }
+    #yes-btn {
+      position: fixed;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.6);
+      color: #fff;
+      font-size: 1.4rem;
+      font-family: Georgia, serif;
+      letter-spacing: 4px;
+      padding: 16px 52px;
+      border-radius: 9999px;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 4px 40px rgba(255,255,255,0.08);
+      z-index: 10;
+    }
+    #yes-btn:hover {
+      background: rgba(255,255,255,0.30);
+      transform: translateX(-50%) scale(1.06);
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      gap: 24px;
+    }
+    #overlay.show { display: flex; }
+    #overlay h1 {
+      color: #fff;
+      font-size: clamp(2rem, 6vw, 4rem);
+      text-align: center;
+      line-height: 1.3;
+      animation: fadeIn 1.2s ease forwards;
+    }
+    #overlay p {
+      color: rgba(255,255,255,0.6);
+      font-size: 1.1rem;
+      animation: fadeIn 1.8s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .heart { font-size:3rem; animation:pulse 1.2s infinite; }
+    @keyframes pulse {
+      0%,100% { transform:scale(1); }
+      50%      { transform:scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <video id="vid" src="1st-part.mp4" autoplay loop muted playsinline></video>
+  <button id="yes-btn" onclick="handleYes()">YES 💍</button>
+  <div id="overlay">
+    <span class="heart">❤️</span>
+    <h1>She said YES! 🎉</h1>
+    <p>This moment is everything.</p>
+  </div>
+  <script>
+    document.addEventListener("click", function unmute() {
+      var v = document.getElementById("vid");
+      v.muted = false;
+      v.play();
+      document.removeEventListener("click", unmute);
+    }, { once: true });
+
+    function handleYes() {
+      document.getElementById("vid").pause();
+      document.getElementById("overlay").classList.add("show");
+    }
+  </script>
+</body>
+</html>
