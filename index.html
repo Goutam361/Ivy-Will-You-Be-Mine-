@@ -1760,8 +1760,8 @@
       angle += spread;
     }
 
-    // 50% Reduced jump distance (agile leap between 135px and 230px)
-    const jumpDist = 135 + Math.random() * 95;
+    // 2x increased dynamic jump distance (~270px to 460px) for energetic, unpredictable dodging
+    const jumpDist = 270 + Math.random() * 190;
 
     let targetX = curBtnCenterX + Math.cos(angle) * jumpDist - w / 2;
     let targetY = curBtnCenterY + Math.sin(angle) * jumpDist - h / 2;
@@ -1770,8 +1770,8 @@
     if (targetX < minX || targetX > maxX || targetY < minY || targetY > maxY) {
       const centerScreenX = winW / 2;
       const centerScreenY = winH / 2;
-      const inwardAngle = Math.atan2(centerScreenY - curBtnCenterY, centerScreenX - curBtnCenterX) + (Math.random() * 1.2 - 0.6);
-      const safeDist = 120 + Math.random() * 90;
+      const inwardAngle = Math.atan2(centerScreenY - curBtnCenterY, centerScreenX - curBtnCenterX) + (Math.random() * 1.4 - 0.7);
+      const safeDist = 240 + Math.random() * 160;
       targetX = curBtnCenterX + Math.cos(inwardAngle) * safeDist - w / 2;
       targetY = curBtnCenterY + Math.sin(inwardAngle) * safeDist - h / 2;
     }
