@@ -1738,54 +1738,58 @@
     const minY = MARGIN + 12;
     const maxY = Math.max(MARGIN, winH - h - MARGIN - 12);
 
-    // Reference center of current button or interaction point
-    const curX = (typeof fromX === 'number') ? fromX : (noX + w / 2);
-    const curY = (typeof fromY === 'number') ? fromY : (noY + h / 2);
+    // Current button center
+    const curBtnCenterX = noX + w / 2;
+    const curBtnCenterY = noY + h / 2;
 
-    // 6 Dynamic Far Zones across screen corners and edges with random jitter
-    const zones = [
-      { id: 0, x: minX + Math.random() * 35, getY: () => minY + Math.random() * 45 }, // Top-Left
-      { id: 1, x: maxX - Math.random() * 35, getY: () => minY + Math.random() * 45 }, // Top-Right
-      { id: 2, x: minX + Math.random() * 35, getY: () => maxY - Math.random() * 45 }, // Bottom-Left
-      { id: 3, x: maxX - Math.random() * 35, getY: () => maxY - Math.random() * 45 }, // Bottom-Right
-      { id: 4, x: minX + Math.random() * 25, getY: () => Math.max(minY, Math.min(maxY, winH * 0.45 + (Math.random() * 80 - 40))) }, // Mid-Left
-      { id: 5, x: maxX - Math.random() * 25, getY: () => Math.max(minY, Math.min(maxY, winH * 0.45 + (Math.random() * 80 - 40))) }  // Mid-Right
-    ];
+    // Interaction / cursor point (fallback to current button center if undefined)
+    const curX = (typeof fromX === 'number') ? fromX : curBtnCenterX;
+    const curY = (typeof fromY === 'number') ? fromY : curBtnCenterY;
 
-    // Score zones by distance from current touch/button position
-    const scoredZones = zones.map(z => {
-      const zY = z.getY();
-      const zCenterX = z.x + w / 2;
-      const zCenterY = zY + h / 2;
-      const dist = Math.hypot(zCenterX - curX, zCenterY - curY);
-      return { ...z, targetY: zY, dist };
-    });
+    // Direction vector away from cursor / touch
+    let dx = curBtnCenterX - curX;
+    let dy = curBtnCenterY - curY;
+    let angle = Math.atan2(dy, dy !== 0 || dx !== 0 ? dx : 0.01);
 
-    // Sort by farthest distance first
-    scoredZones.sort((a, b) => b.dist - a.dist);
+    // If cursor was right on center, pick a totally random angle
+    if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+      angle = Math.random() * Math.PI * 2;
+    } else {
+      // Add heavy unpredictable angular spread (-85deg to +85deg)
+      const spread = (Math.random() * 170 - 85) * (Math.PI / 180);
+      angle += spread;
+    }
 
-    // Filter out recently occupied zone so it always jumps to a fresh far zone
-    let candidates = scoredZones.filter(z => z.id !== currentCornerIndex);
-    if (candidates.length === 0) candidates = scoredZones;
+    // 50% Reduced jump distance (agile leap between 135px and 230px)
+    const jumpDist = 135 + Math.random() * 95;
 
-    // Pick among the top 2 farthest zones randomly for high unpredictability
-    const topPickIndex = Math.random() < 0.75 ? 0 : Math.min(1, candidates.length - 1);
-    const chosen = candidates[topPickIndex];
-    currentCornerIndex = chosen.id;
+    let targetX = curBtnCenterX + Math.cos(angle) * jumpDist - w / 2;
+    let targetY = curBtnCenterY + Math.sin(angle) * jumpDist - h / 2;
 
-    noX = Math.min(Math.max(minX, chosen.x), maxX);
-    noY = Math.min(Math.max(minY, chosen.targetY), maxY);
+    // If target jumps close to or beyond screen edges, bounce back inwards randomly
+    if (targetX < minX || targetX > maxX || targetY < minY || targetY > maxY) {
+      const centerScreenX = winW / 2;
+      const centerScreenY = winH / 2;
+      const inwardAngle = Math.atan2(centerScreenY - curBtnCenterY, centerScreenX - curBtnCenterX) + (Math.random() * 1.2 - 0.6);
+      const safeDist = 120 + Math.random() * 90;
+      targetX = curBtnCenterX + Math.cos(inwardAngle) * safeDist - w / 2;
+      targetY = curBtnCenterY + Math.sin(inwardAngle) * safeDist - h / 2;
+    }
+
+    // Clamp strictly within viewport margins
+    noX = Math.min(Math.max(minX, targetX), maxX);
+    noY = Math.min(Math.max(minY, targetY), maxY);
 
     // Pick a random dynamic animation from the animation pool
     const anim = DODGE_ANIMATIONS[Math.floor(Math.random() * DODGE_ANIMATIONS.length)];
     btnNo.style.transition = anim.transition;
     btnNo.style.transform = anim.getTransform(noX, noY);
 
-    // After animation completes, smoothly stabilize button orientation
+    // Smoothly stabilize button orientation after animation
     setTimeout(() => {
-      btnNo.style.transition = 'transform 0.25s ease, background 0.2s, box-shadow 0.2s';
+      btnNo.style.transition = 'transform 0.22s ease, background 0.2s, box-shadow 0.2s';
       btnNo.style.transform = `translate3d(${noX}px, ${noY}px, 0) scale(1) rotate(0deg)`;
-    }, 400);
+    }, 380);
   }
 
   // Desktop Mouse Movement Proximity
